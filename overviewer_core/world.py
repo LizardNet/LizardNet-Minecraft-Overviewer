@@ -202,12 +202,12 @@ class World(object):
             spawnY = -63
         if spawnY > 319:
             spawnY = 319
-            
+
         ## The chunk that holds the spawn location
         chunkX = spawnX//16
         chunkY = spawnY//16
         chunkZ = spawnZ//16
-        
+
         ## The block for spawn *within* the chunk
         inChunkX = spawnX % 16
         inChunkZ = spawnZ % 16
@@ -221,9 +221,9 @@ class World(object):
             chunk = regionset.get_chunk(chunkX, chunkZ)
         except ChunkDoesntExist:
             return (spawnX, spawnY, spawnZ)
-        
+
         ## Check for first air block (0) above spawn
-        
+
         # Get only the spawn section and the ones above, ordered from low to high
         spawnChunkSections = sorted(chunk['Sections'], key=lambda sec: sec['Y'])[chunkY:]
         for section in spawnChunkSections:
@@ -237,6 +237,18 @@ class World(object):
             # Next section, start at local 0
             inChunkY = 0
         return spawnX, 320, spawnZ
+
+
+VALID_CHUNK_STATUSES = (
+    "minecraft:full",
+    "full",
+    "postprocessed",
+    "fullchunk",
+    "mobs_spawned",
+    "spawn",
+    "",
+)
+
 
 class RegionSet(object):
     """This object is the gateway to a particular Minecraft dimension within a
@@ -1189,7 +1201,7 @@ class RegionSet(object):
             # Frogspawn
             'minecraft:frogspawn': (1231, 0),
             # Amethyst Cluster
-            'minecraft:amethyst_cluster': (1232, 0), 
+            'minecraft:amethyst_cluster': (1232, 0),
             'minecraft:sculk_catalyst': (1244, 0),
         }
 
@@ -1939,18 +1951,24 @@ class RegionSet(object):
             # starting with 1.16 snapshot 20w17a, block states are packed differently
             longarray_unpacker = self._packed_longarray_to_shorts_v116
 
-        # From the interior of a map to the edge, a chunk's status may be one of:
-        # - postprocessed (interior, or next to fullchunk)
-        # - fullchunk (next to decorated)
-        # - decorated (next to liquid_carved)
-        # - liquid_carved (next to carved)
-        # - carved (edge of world)
-        # - empty
-        # Empty is self-explanatory, and liquid_carved and carved seem to correspond
-        # to SkyLight not being calculated, which results in mostly-black chunks,
-        # so we'll just pretend they aren't there.
-        if chunk_data.get("Status", "") not in ("minecraft:full", "postprocessed", "fullchunk", "mobs_spawned", "spawn", "full", ""):
-            raise ChunkDoesntExist("Chunk %s,%s doesn't exist" % (x,z))
+        # Different versions of the game have used various chunk statuses, so we won't
+        # list every possible status. In general, almost every chunk will have a value
+        # of "full", with exceptions only near the edge of generation, so this check
+        # mostly serves to define how close to the edge we can render without showing
+        # junk data. We include a few other statuses that we know about, where the chunk
+        # data appears to be largely intact including lighting, so we can render it.
+        #
+        # However, chunks that have been converted from an older version without a
+        # Status field will have a Status of "empty" despite perfectly valid block data.
+        # This can be detected by checking for TerrainPopulated, which is set to 1 for
+        # such chunks (and is otherwise not present).
+        chunk_status = chunk_data.get("Status", "")
+        if chunk_status not in VALID_CHUNK_STATUSES:
+            if chunk_data.get("TerrainPopulated", 0) == 1:
+                # This chunk was converted from an older version and has valid block data
+                pass
+            else:
+                raise ChunkDoesntExist("Chunk %s,%s doesn't exist" % (x, z))
 
         unrecognized_block_types = {}
         for section in chunk_data['Sections']:
