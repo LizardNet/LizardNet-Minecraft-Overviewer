@@ -168,6 +168,13 @@ def signWrangler(poi):
         for field in ["Text1", "Text2", "Text3", "Text4"]:
             poi[field + "Raw"] = poi[field]
             poi[field] = jsonText(poi[field])
+        poi.update({
+            "back_text": {"has_glowing_text": 0, "color": "black", "messages": ["", "", "", ""]},
+            "front_text": {"has_glowing_text": 0, "color": "black",
+                           "messages": [poi["Text1"], poi["Text2"], poi["Text3"], poi["Text4"]]},
+            "keepPacked": 0,
+            "is_waxed": 0,
+        })
     else:
         for field in ["front_text", "back_text"]:
             if field in poi:
