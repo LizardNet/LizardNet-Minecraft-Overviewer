@@ -169,9 +169,18 @@ def signWrangler(poi):
             poi[field + "Raw"] = poi[field]
             poi[field] = jsonText(poi[field])
         poi.update({
-            "back_text": {"has_glowing_text": 0, "color": "black", "messages": ["", "", "", ""]},
-            "front_text": {"has_glowing_text": 0, "color": "black",
-                           "messages": [poi["Text1"], poi["Text2"], poi["Text3"], poi["Text4"]]},
+            "back_text": {
+                "has_glowing_text": 0,
+                "color": "black",
+                "messages": ["", "", "", ""],
+                "messagesRaw": ["", "", "", ""]
+            },
+            "front_text": {
+                "has_glowing_text": poi.get('GlowingText', 0),
+                "color": poi.get('Color', 'black'),
+                "messages": [poi["Text1"], poi["Text2"], poi["Text3"], poi["Text4"]],
+                "messagesRaw": [poi["Text1Raw"], poi["Text2Raw"], poi["Text3Raw"], poi["Text4Raw"]]
+            },
             "keepPacked": 0,
             "is_waxed": 0,
         })
@@ -184,7 +193,6 @@ def signWrangler(poi):
                 for i in range(len(messages)):
                     messages[i] = jsonText(messages[i])
     return poi
-
 
 
 def handleEntities(rset, config, config_path, filters, markers):
