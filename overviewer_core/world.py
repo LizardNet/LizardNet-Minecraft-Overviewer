@@ -88,8 +88,9 @@ class World(object):
 
     """
 
-    def __init__(self, worlddir):
+    def __init__(self, worlddir, feature_flags):
         self.worlddir = worlddir
+        self.feature_flags = feature_flags
 
         # This list, populated below, will hold RegionSet files that are in
         # this world
@@ -137,7 +138,7 @@ class World(object):
                 # construct a regionset object for this
                 rel = os.path.relpath(root, self.worlddir)
                 if os.path.basename(rel) != "poi":
-                    rset = RegionSet(root, rel)
+                    rset = RegionSet(root, rel, self.feature_flags)
                     if root == os.path.join(self.worlddir, "region"):
                         self.regionsets.insert(0, rset)
                     else:
@@ -262,7 +263,7 @@ class RegionSet(object):
 
     """
 
-    def __init__(self, regiondir, rel):
+    def __init__(self, regiondir, rel, feature_flags):
         """Initialize a new RegionSet to access the region files in the given
         directory.
 
@@ -275,6 +276,7 @@ class RegionSet(object):
         in-memory.
 
         """
+        self.feature_flags = feature_flags
         self.regiondir = os.path.normpath(regiondir)
         self.rel = os.path.normpath(rel)
         logging.debug("regiondir is %r" % self.regiondir)
@@ -1262,7 +1264,7 @@ class RegionSet(object):
 
     # Re-initialize upon unpickling
     def __getstate__(self):
-        return (self.regiondir, self.rel)
+        return (self.regiondir, self.rel, self.feature_flags)
     def __setstate__(self, state):
         return self.__init__(*state)
 
@@ -2009,7 +2011,8 @@ class RegionSet(object):
         # such chunks (and is otherwise not present).
         chunk_status = chunk_data.get("Status", "")
         if chunk_status not in VALID_CHUNK_STATUSES:
-            if chunk_data.get("TerrainPopulated", 0) == 1:
+            if (chunk_data.get("TerrainPopulated", 0) == 1
+                    and 'render_legacy_chunks' in self.feature_flags and self.feature_flags['render_legacy_chunks']):
                 # This chunk was converted from an older version and has valid block data
                 pass
             else:
@@ -2148,7 +2151,8 @@ class RegionSet(object):
 
         chunk_status = chunk_data.get("Status", "")
         if chunk_status not in VALID_CHUNK_STATUSES:
-            if chunk_data.get("TerrainPopulated", 0) == 1:
+            if (chunk_data.get("TerrainPopulated", 0) == 1
+                    and 'render_legacy_chunks' in self.feature_flags and self.feature_flags['render_legacy_chunks']):
                 # This chunk was converted from an older version and has valid block data
                 pass
             else:

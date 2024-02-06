@@ -485,7 +485,7 @@ def main():
             w = worldcache[render['world']]
         except KeyError:
             try:
-                w = world.World(render['world'])
+                w = world.World(render['world'], config['feature_flags'])
             except CorruptNBTError as e:
                 logging.error("Failed to open world %r.", render['world'])
                 raise e

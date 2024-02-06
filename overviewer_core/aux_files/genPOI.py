@@ -550,7 +550,7 @@ def main():
 
         # find or create the world object
         if (render['world'] not in worldcache):
-            w = world.World(render['world'])
+            w = world.World(render['world'], config['feature_flags'])
             worldcache[render['world']] = w
         else:
             w = worldcache[render['world']]

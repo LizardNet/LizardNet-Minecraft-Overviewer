@@ -109,6 +109,16 @@ def get_default_config():
 
     conf['processes'] = Setting(required=True, validator=int, default=-1)
 
+    conf['feature_flags'] = Setting(
+        required=True,
+        default=OrderedDict(),
+        validator=make_configDictValidator(
+            {
+                "render_legacy_chunks": Setting(required=True, validator=validateBool, default=False),
+            }
+        )
+    )
+
     # TODO clean up this ugly in sys.argv hack
     if platform.system() == 'Windows' or not sys.stdout.isatty() or "--simple" in sys.argv:
         obs = LoggingObserver()
