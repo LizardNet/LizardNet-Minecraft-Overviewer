@@ -1812,10 +1812,10 @@ block(blockid=42, top_image=BLOCKTEXTURE + "iron_block.png")
 # these wooden slabs are unobtainable without cheating, they are still
 # here because lots of pre-1.3 worlds use this blocks, add prismarine slabs
 @material(blockid=[43, 44, 181, 182, 204, 205, 1124, 1194, 1203, 1213, 1214] + list(range(11340, 11359)) +
-          list(range(1027, 1030)) + list(range(1072, 1080)) + list(range(1103, 1107)),
+          list(range(1027, 1030)) + list(range(1072, 1080)) + list(range(1103, 1107)) + [12665, 12668, 12672],
           data=list(range(16)),
           transparent=[44, 182, 205, 1124, 1194, 1203, 1213, 1214] + list(range(11340, 11359)) + list(range(1027, 1030)) +
-          list(range(1072, 1080)) + list(range(1103, 1107)), solid=True)
+          list(range(1072, 1080)) + list(range(1103, 1107)) + [12665, 12668, 12672], solid=True)
 def slabs(self, blockid, data):
     if blockid == 44 or blockid == 182: 
         texture = data & 7
@@ -1942,6 +1942,12 @@ def slabs(self, blockid, data):
         top = side = self.load_image_texture(deepslate_tex[blockid]).copy()
     elif blockid == 1124:
         top = side = self.load_image_texture(BLOCKTEXTURE + "mud_bricks.png").copy()
+    elif blockid == 12665: # tuff_slab
+        top = side = self.load_image_texture(BLOCKTEXTURE + "tuff.png").copy()
+    elif blockid == 12668: # polished_tuff_slab
+        top = side = self.load_image_texture(BLOCKTEXTURE + "polished_tuff.png").copy()
+    elif blockid == 12672: # tuff_brick_slab
+        top = side = self.load_image_texture(BLOCKTEXTURE + "tuff_bricks.png").copy()
 
     if blockid == 43 or blockid == 181 or blockid == 204: # double slab
         return self.build_block(top, side)
@@ -2203,10 +2209,12 @@ block(blockid=52, top_image=BLOCKTEXTURE + "spawner.png", transparent=True)
 # smooth_red_sandstone blackstone polished_blackstone polished_blackstone_brick
 # also all the copper variants
 # also all deepslate variants
+# also all the tuff variants
 @material(blockid=[53, 67, 108, 109, 114, 128, 134, 135, 136, 156, 163, 164, 180, 203, 509, 510,
                    11337, 11338, 11339, 11370, 11371, 11374, 11375, 11376, 11377, 11378, 11379,
                    11380, 11381, 11382, 11383, 11384, 11415, 1030, 1031, 1032, 1064, 1065, 1066,
-                   1067, 1068, 1069, 1070, 1071, 1099, 1100, 1101, 1102, 1193, 1202, 1211, 1212, 1224],
+                   1067, 1068, 1069, 1070, 1071, 1099, 1100, 1101, 1102, 1193, 1202, 1211, 1212, 1224,
+                   12664, 12667, 12671],
           data=list(range(128)), transparent=True, solid=True, nospawn=True)
 def stairs(self, blockid, data):
     # preserve the upside-down bit
@@ -2278,10 +2286,15 @@ def stairs(self, blockid, data):
         # Cherry
         1202: BLOCKTEXTURE + "cherry_planks.png",
         # Bamboo
-        1211:BLOCKTEXTURE + "bamboo_planks.png",
-        1212:BLOCKTEXTURE + "bamboo_mosaic.png",
+        1211: BLOCKTEXTURE + "bamboo_planks.png",
+        1212: BLOCKTEXTURE + "bamboo_mosaic.png",
         # Mud
-        1224:BLOCKTEXTURE + "mud_bricks.png"
+        1224: BLOCKTEXTURE + "mud_bricks.png",
+
+        # Tuff
+        12664: BLOCKTEXTURE + "tuff.png",
+        12667: BLOCKTEXTURE + "polished_tuff.png",
+        12671: BLOCKTEXTURE + "tuff_bricks.png",
     }
 
     texture = self.load_image_texture(stair_id_to_tex[blockid]).copy()
@@ -5507,7 +5520,7 @@ def beacon(self, blockid, data):
 
 # cobblestone and mossy cobblestone walls, chorus plants, mossy stone brick walls
 # one additional bit of data value added for mossy and cobblestone
-@material(blockid=[199, 1225]+list(range(1792, 1812 + 1)), data=list(range(32)), transparent=True, nospawn=True)
+@material(blockid=[199, 1225]+list(range(1792, 1815 + 1)), data=list(range(32)), transparent=True, nospawn=True)
 def cobblestone_wall(self, blockid, data):
     walls_id_to_tex = {
           199: BLOCKTEXTURE + "chorus_plant.png", # chorus plants
@@ -5532,7 +5545,10 @@ def cobblestone_wall(self, blockid, data):
         1810: BLOCKTEXTURE + "polished_deepslate.png",
         1811: BLOCKTEXTURE + "deepslate_bricks.png",
         1812: BLOCKTEXTURE + "deepslate_tiles.png",
-        
+        1813: BLOCKTEXTURE + "tuff.png",
+        1814: BLOCKTEXTURE + "polished_tuff.png",
+        1815: BLOCKTEXTURE + "tuff_bricks.png",
+
         1225: BLOCKTEXTURE + "mud_bricks.png"
     }
     t = self.load_image_texture(walls_id_to_tex[blockid]).copy()
@@ -7569,3 +7585,9 @@ def vault(self, blockid, data):
         # This isn't included in 1.20.4; if we happen to be using a snapshot jar, then great. Otherwise just don't
         # render for now.
         return None
+
+block(blockid=12663, top_image=BLOCKTEXTURE + "chiseled_tuff.png")
+block(blockid=12666, top_image=BLOCKTEXTURE + "polished_tuff.png")
+block(blockid=12669, top_image=BLOCKTEXTURE + "tuff_bricks.png")
+block(blockid=12670, top_image=BLOCKTEXTURE + "chiseled_tuff_bricks.png")
+

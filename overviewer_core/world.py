@@ -1125,6 +1125,9 @@ class RegionSet(object):
             'minecraft:polished_deepslate_wall': (1810, 0),
             'minecraft:deepslate_brick_wall': (1811, 0),
             'minecraft:deepslate_tile_wall': (1812, 0),
+            'minecraft:tuff_wall': (1813, 0),
+            'minecraft:polished_tuff_wall': (1814, 0),
+            'minecraft:tuff_brick_wall': (1815, 0),
             # 1.20.♾
             # Mangrove
             'minecraft:mangrove_wood': (1192, 0),
@@ -1290,6 +1293,17 @@ class RegionSet(object):
             'minecraft:waxed_oxidized_copper_trapdoor': (12661, 0),
 
             'minecraft:vault': (12662, 0),
+
+            'minecraft:chiseled_tuff': (12663, 0),
+            'minecraft:tuff_stairs': (12664, 0),
+            'minecraft:tuff_slab': (12665, 0),
+            'minecraft:polished_tuff': (12666, 0),
+            'minecraft:polished_tuff_stairs': (12667, 0),
+            'minecraft:polished_tuff_slab': (12668, 0),
+            'minecraft:tuff_bricks': (12669, 0),
+            'minecraft:chiseled_tuff_bricks': (12670, 0),
+            'minecraft:tuff_brick_stairs': (12671, 0),
+            'minecraft:tuff_brick_slab': (12672, 0),
         }
 
         colors = [   'white', 'orange', 'magenta', 'light_blue',
@@ -1341,7 +1355,8 @@ class RegionSet(object):
                         'minecraft:blackstone_slab','minecraft:polished_blackstone_slab',
                         'minecraft:polished_blackstone_brick_slab', 'minecraft:cobbled_deepslate_slab',
                         'minecraft:polished_deepslate_slab', 'minecraft:deepslate_brick_slab',
-                        'minecraft:deepslate_tile_slab', 'minecraft:mud_brick_slab'
+                        'minecraft:deepslate_tile_slab', 'minecraft:mud_brick_slab',
+                        'minecraft:tuff_slab', 'minecraft:polished_tuff_slab', 'minecraft:tuff_brick_slab'
                          )
 
         prismarine_slabs = ('minecraft:prismarine_slab','minecraft:dark_prismarine_slab','minecraft:prismarine_brick_slab')
@@ -1401,6 +1416,9 @@ class RegionSet(object):
             'minecraft:dark_prismarine_slab': 'minecraft:dark_prismarine',
             'minecraft:prismarine_brick_slab': 'minecraft:prismarine_bricks',
             'minecraft:stone_brick_slab': 'minecraft:stone_bricks',
+            'minecraft:tuff_slab': 'minecraft:tuff',
+            'minecraft:polished_tuff_slab': 'minecraft:polished_tuff',
+            'minecraft:tuff_brick_slab': 'minecraft:tuff_bricks',
 
             # Additional wooden double slabs not handled by the wooden slab function
             'minecraft:mangrove_slab': 'minecraft:mangrove_planks',
