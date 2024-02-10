@@ -1,8 +1,7 @@
-name: Discord Release Notification
-
 on:
   release:
-    types: [published]
+    types:
+      - published
 
 jobs:
   send_discord_notification:
@@ -13,27 +12,44 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Send Discord Message
+        if: github.event_name == 'release' && github.event.action == 'published'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           RELEASE_NAME: ${{ github.event.release.name }}
           RELEASE_DESC: ${{ github.event.release.body }}
           RELEASE_URL: ${{ github.event.release.html_url }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
           RELEASE_CREATED_AT: ${{ github.event.release.created_at }}
+          IS_PRERELEASE: ${{ github.event.release.prerelease }}
         run: |
+          if [ "${IS_PRERELEASE}" = true ]; then
+            COLOR=10381827
+            FOOTER_TEXT="${RELEASE_TAG} • Pre-Release"
+          else
+            COLOR=2328118
+            FOOTER_TEXT="${RELEASE_TAG} • Latest"
+          fi
+          
           PAYLOAD=$(cat <<-EOF
           {
             "content": null,
             "embeds": [
               {
                 "title": "${RELEASE_NAME}",
+                "description": "${RELEASE_DESC}",
                 "url": "${RELEASE_URL}",
-                "color": 8435015,
+                "color": ${COLOR},
+                "author": {
+                  "name": "GregoryAM-SP / The-Minecraft-Overviewer",
+                  "url": "https://github.com/GregoryAM-SP/The-Minecraft-Overviewer",
+                  "icon_url": "https://cdn.discordapp.com/avatars/366005296813834242/9cc3c892d3b817e09fa567c4bc992247.webp?size=32"
+                },
                 "footer": {
-                  "text": "Released"
+                  "text": "${FOOTER_TEXT}"
                 },
                 "timestamp": "${RELEASE_CREATED_AT}",
                 "image": {
-                  "url": "https://camo.githubusercontent.com/b9e2ae9ada73e9453411cbe056249bd2a79ef94e302b1e714c7ed2f99a95a0f0/68747470733a2f2f677265676f7279616d2e636f6d2f6173736574732f696d672f6769746875622f6f7665727669657765722d696d672e776562703f683d3033343763336264333861653238343633376164653737363033346664323831"
+                  "url": "https://gregoryam.com/assets/img/github/overviewer-img.webp?h=0347c3bd38ae284637ade776034fd281"
                 }
               }
             ],
@@ -41,5 +57,4 @@ jobs:
           }
           EOF
           )
-          
           curl -X POST -H "Content-Type: application/json" -d "$PAYLOAD" $DISCORD_WEBHOOK_URL

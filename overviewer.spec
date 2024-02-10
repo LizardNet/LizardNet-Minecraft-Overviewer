@@ -33,11 +33,12 @@ exe = EXE(pyz,
           debug=False,
           strip=False,
           upx=False,
-          console=True )
+          console=True,
+          contents_directory='.' )
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
                a.datas,
                strip=False,
                upx=False,
-               name=get_overviewer_pkgname())
+               name='overviewer')
