@@ -643,36 +643,44 @@ class RegionSet(object):
             'minecraft:beacon': (138, 0),
             'minecraft:mushroom_stem': (139, 0),
             'minecraft:flower_pot': (140, 0),
-            'minecraft:potted_poppy': (140, 0),  # Pots not rendering
-            'minecraft:potted_blue_orchid': (140, 0),
-            'minecraft:potted_allium': (140, 0),
-            'minecraft:potted_azure_bluet': (140, 0),
-            'minecraft:potted_red_tulip': (140, 0),
-            'minecraft:potted_orange_tulip': (140, 0),
-            'minecraft:potted_white_tulip': (140, 0),
-            'minecraft:potted_pink_tulip': (140, 0),
-            'minecraft:potted_oxeye_daisy': (140, 0),
-            'minecraft:potted_oak_sapling': (140, 0),
-            'minecraft:potted_spruce_sapling': (140, 0),
-            'minecraft:potted_birch_sapling': (140, 0),
-            'minecraft:potted_jungle_sapling': (140, 0),
-            'minecraft:potted_acacia_sapling': (140, 0),
-            'minecraft:potted_dark_oak_sapling': (140, 0),
-            'minecraft:potted_red_mushroom': (140, 0),
-            'minecraft:potted_brown_mushroom': (140, 0),
-            'minecraft:potted_fern': (140, 0),
-            'minecraft:potted_dead_bush': (140, 0),
-            'minecraft:potted_cactus': (140, 0),
-            'minecraft:potted_bamboo': (140, 0),
+            'minecraft:potted_poppy': (140, 1),  # Pots not rendering
+            'minecraft:potted_blue_orchid': (140, 2),
+            'minecraft:potted_allium': (140, 3),
+            'minecraft:potted_azure_bluet': (140, 4),
+            'minecraft:potted_red_tulip': (140, 5),
+            'minecraft:potted_orange_tulip': (140, 6),
+            'minecraft:potted_white_tulip': (140, 7),
+            'minecraft:potted_pink_tulip': (140, 8),
+            'minecraft:potted_oxeye_daisy': (140, 9),
+            'minecraft:potted_oak_sapling': (140, 10),
+            'minecraft:potted_spruce_sapling': (140, 11),
+            'minecraft:potted_birch_sapling': (140, 12),
+            'minecraft:potted_jungle_sapling': (140, 13),
+            'minecraft:potted_acacia_sapling': (140, 14),
+            'minecraft:potted_dark_oak_sapling': (140, 15),
+            'minecraft:potted_red_mushroom': (140, 16),
+            'minecraft:potted_brown_mushroom': (140, 17),
+            'minecraft:potted_fern': (140, 18),
+            'minecraft:potted_dead_bush': (140, 19),
+            'minecraft:potted_cactus': (140, 20),
+            'minecraft:potted_bamboo': (140, 21),
+            'minecraft:potted_torchflower': (140, 22),
+            'minecraft:potted_cherry_sapling': (140, 23),
+            'minecraft:potted_mangrove_propagule': (140, 24),
+            'minecraft:potted_dandelion': (140, 25),
+            'minecraft:potted_cornflower': (140, 26),
+            'minecraft:potted_lily_of_the_valley': (140, 27),
+            'minecraft:potted_wither_rose': (140, 28),
+            'minecraft:potted_crimson_fungus': (140, 29),
+            'minecraft:potted_warped_fungus': (140, 30),
+            'minecraft:potted_crimson_roots': (140, 31),
+            'minecraft:potted_warped_roots': (140, 32),
+            'minecraft:potted_azalea_bush': (140, 33),
+            'minecraft:potted_flowering_azalea_bush': (140, 34),
             'minecraft:carrots': (141, 0),
             'minecraft:potatoes': (142, 0),
             'minecraft:oak_button': (143, 0),
-            'minecraft:skeleton_skull': (144, 0),  # not rendering
-            'minecraft:wither_skeleton_skull': (144, 1),   # not rendering
-            'minecraft:zombie_head': (144, 2),     # not rendering
-            'minecraft:player_head': (144, 3),     # not rendering
-            'minecraft:creeper_head': (144, 4),    # not rendering
-            'minecraft:dragon_head': (144, 5),     # not rendering
+
             'minecraft:anvil': (145, 0),
             'minecraft:chipped_anvil': (145, 4),
             'minecraft:damaged_anvil': (145, 8),
@@ -783,6 +791,7 @@ class RegionSet(object):
             'minecraft:beetroots': (207, 0),
             'minecraft:dirt_path': (208, 0),
             'minecraft:grass_path': (208, 0),   # compatibility
+            'minecraft:end_gateway': (209, 0),
             'minecraft:repeating_command_block': (210, 0),
             'minecraft:chain_command_block': (211, 0),
             'minecraft:frosted_ice': (212, 0),
@@ -798,29 +807,11 @@ class RegionSet(object):
 
             'minecraft:armor_stand': (416, 0),  # not rendering
 
-            # The following blocks are underwater and are not yet rendered.
-            # To avoid spurious warnings, we'll treat them as water for now.
-            'minecraft:brain_coral': (8, 0),
-            'minecraft:brain_coral_fan': (8, 0),
-            'minecraft:brain_coral_wall_fan': (8, 0),
-            'minecraft:bubble_column': (8, 0),
-            'minecraft:bubble_coral': (8, 0),
-            'minecraft:bubble_coral_fan': (8, 0),
-            'minecraft:bubble_coral_wall_fan': (8, 0),
-            'minecraft:fire_coral': (8, 0),
-            'minecraft:fire_coral_fan': (8, 0),
-            'minecraft:fire_coral_wall_fan': (8, 0),
-            'minecraft:horn_coral': (8, 0),
-            'minecraft:horn_coral_fan': (8, 0),
-            'minecraft:horn_coral_wall_fan': (8, 0),
             'minecraft:kelp': (8, 0),
             'minecraft:kelp_plant': (8, 0),
             'minecraft:sea_pickle': (8, 0),
             'minecraft:seagrass': (8, 0),
             'minecraft:tall_seagrass': (8, 0),
-            'minecraft:tube_coral': (8, 0),
-            'minecraft:tube_coral_fan': (8, 0),
-            'minecraft:tube_coral_wall_fan': (8, 0),
 
             # Some 1.16 stuff that I'll arbitrarily shove in here due to ID bloat
             'minecraft:ancient_debris': (1000, 0),
@@ -1069,6 +1060,7 @@ class RegionSet(object):
             "minecraft:grindstone": (11369, 0),
             "minecraft:mossy_stone_brick_stairs": (11370, 0),
             "minecraft:mossy_cobblestone_stairs": (11371, 0),
+            "minecraft:heavy_core": (11372, 0),
             "minecraft:lantern": (11373, 0),
             "minecraft:smooth_sandstone_stairs": (11374, 0),
             'minecraft:smooth_quartz_stairs': (11375, 0),
@@ -1304,7 +1296,41 @@ class RegionSet(object):
             'minecraft:chiseled_tuff_bricks': (12670, 0),
             'minecraft:tuff_brick_stairs': (12671, 0),
             'minecraft:tuff_brick_slab': (12672, 0),
+            
+            'minecraft:conduit': (1255, 0),
+            'minecraft:sniffer_egg': (1256, 0),
+            'minecraft:turtle_egg': (1257, 0),
+
+            'minecraft:small_dripleaf': (1258, 0),
+            'minecraft:candle_cake': (1259, 0),
+            'minecraft:bubble_column': (1260, 0),
+            'minecraft:candle': (1261, 0),
+
+            # Heads
+            'minecraft:skeleton_skull': (1270, 0),
+            'minecraft:wither_skeleton_skull': (1271, 0),
+            'minecraft:zombie_head': (1272, 0),
+            'minecraft:creeper_head': (1273, 0),
+            'minecraft:piglin_head': (1274, 0),
+            'minecraft:dragon_head': (1275, 0),
+            'minecraft:skeleton_wall_skull': (1276, 0),
+            'minecraft:wither_skeleton_wall_skull': (1277, 0),
+            'minecraft:zombie_wall_head': (1278, 0),
+            'minecraft:creeper_wall_head': (1279, 0),
+            'minecraft:piglin_wall_head': (1280, 0),
+            'minecraft:dragon_wall_head': (1281, 0),
+            'minecraft:player_head': (1282, 0),
+            'minecraft:player_wall_head': (1283, 0),
+
+            # Including these blocks ensures that no namespaces are omitted.
+            # Add the following to the end of this block map; they serve no purpose.
+            'minecraft:barrier': (99999, 0),
+            'minecraft:light': (99999, 1),
+            'minecraft:moving_piston': (99999, 2),
+            'minecraft:structure_void': (99999, 4),
+            
         }
+        
 
         colors = [   'white', 'orange', 'magenta', 'light_blue',
                     'yellow',   'lime',    'pink',       'gray',
@@ -1321,11 +1347,17 @@ class RegionSet(object):
             self._blockmap['minecraft:%s_glazed_terracotta'  % colors[i]] = (235 + i, 0)
             self._blockmap['minecraft:%s_concrete'           % colors[i]] = (251, i)
             self._blockmap['minecraft:%s_concrete_powder'    % colors[i]] = (252, i)
+            self._blockmap['minecraft:%s_candle'             % colors[i]] = (1265, i)
+            self._blockmap['minecraft:%s_candle_cake'        % colors[i]] = (1264, i)
 
         coral_list = [ 'tube', 'brain', 'bubble', 'fire', 'horn']
         for i in range(len(coral_list)):
             self._blockmap['minecraft:dead_%s_coral' % coral_list[i]] = (1237, i)
             self._blockmap['minecraft:dead_%s_coral_fan' % coral_list[i]] = (1238, i)
+            self._blockmap['minecraft:%s_coral' % coral_list[i]] = (1249, i)
+            self._blockmap['minecraft:%s_coral_fan' % coral_list[i]] = (1250, i)
+            self._blockmap['minecraft:dead_%s_coral_wall_fan' % coral_list[i]] = (1262, i)
+            self._blockmap['minecraft:%s_coral_wall_fan' % coral_list[i]] = (1263, i)
 
     # Re-initialize upon unpickling
     def __getstate__(self):
@@ -1430,6 +1462,8 @@ class RegionSet(object):
 
         colors = ['white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan',
                   'purple', 'blue', 'brown', 'green', 'red', 'black']
+        
+        coral_list = [ 'tube', 'brain', 'bubble', 'fire', 'horn']
 
         key = palette_entry['Name']
         (block, data) = self._blockmap[key]
@@ -1804,6 +1838,71 @@ class RegionSet(object):
                 data |= 4
             if p['vault_state'] in ['ejecting']:
                 data |= 12
+
+        elif key in ['minecraft:dead_%s_coral_wall_fan' % item for item in coral_list] or \
+             key in ['minecraft:%s_coral_wall_fan' % item for item in coral_list]:
+            p = palette_entry['Properties']
+            facing = p['facing']
+            if p['waterlogged'] == 'true':
+                block = 8
+
+            # shift up so we can squeeze orientation in the lowest two bits
+            data = data << 2
+
+            if facing == 'north':
+                data |= 2
+            elif facing == 'east':
+                data |= 3
+            elif facing == 'south':
+                data |= 0
+            elif facing == 'west':
+                data |= 1
+
+        elif (key.endswith('_coral') or key.endswith('fan')):
+            if palette_entry['Properties']['waterlogged'] == 'true':
+                block = 8
+
+        elif key.endswith('_candle') or key == 'minecraft:candle':
+            # intentionally excludes non-coloured candles
+            # data:
+            #   first 4 bits == colour
+            #   next 2 bits == number of candles
+            #   next 1 bit == list
+
+            p = palette_entry['Properties']
+            if p['waterlogged'] == 'true':
+                block = 8
+            else:
+                data |= (int(p['candles']) - 1) << 4
+
+                if p['lit'] == 'true':
+                    data |= 1 << 6
+        elif key.endswith('_candle_cake'):
+            # intentionally excludes non-coloured candles
+            # data:
+            #   first 4 bits == colour
+            #   next 1 bit == list
+
+            p = palette_entry['Properties']
+            if p['lit'] == 'true':
+                data |= 1 << 4
+
+        elif key.endswith('_wall_head') or key.endswith('_wall_skull'):
+            facing = palette_entry['Properties']['facing']
+            data = {'south': 0, 'west': 1, 'north': 2, 'east': 3}[facing]
+
+        elif key.endswith('_head') or key.endswith('_skull'):
+            data = int(palette_entry['Properties']['rotation'])
+
+        elif key == "minecraft:sniffer_egg":
+            p = palette_entry['Properties']
+            if p['hatch'] == 0:
+                data = 0
+            if p['hatch'] == 1:
+                data = 1
+            if p['hatch'] == 2:
+                data = 2
+
 
         return (block, data)
 
