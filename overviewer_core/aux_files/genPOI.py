@@ -16,6 +16,7 @@ markers.js holds a list of which markerSets are attached to each tileSet
 '''
 import datetime
 import gzip
+import hashlib
 import itertools
 import json
 import logging
@@ -588,8 +589,10 @@ def main():
         # find filters for this render
         for f in render['markers']:
             # internal identifier for this filter
-            name = (replaceBads(f['name']) + hex(hash(f['filterFunction']))[-4:] + "_"
-                    + hex(hash(rname))[-4:])
+            hash_filterFunction = hashlib.sha256(f['filterFunction'].__name__.encode('utf-8')).hexdigest()
+            hash_rname = hashlib.sha256(rname.encode('utf-8')).hexdigest()
+            name = (replaceBads(f['name']) + hash_filterFunction[-4:] + "_"
+                    + hash_rname[-4:])
 
             # add it to the list of filters
             for rset in rsets:

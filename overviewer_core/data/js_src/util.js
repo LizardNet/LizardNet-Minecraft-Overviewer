@@ -371,6 +371,15 @@ overviewer.util = {
 
             obj.marker_groups = undefined;
 
+            // Grab the user's preferences for marker group states from cookies
+            let marker_cookie_config = {}
+            const cookies = document.cookie.split('; ');
+            for (let i = 0; i < cookies.length; i++) {
+                let c = cookies[i].split('=')
+                // ... and it's now I remember how much I dislike JS...
+                marker_cookie_config[c[0]] = c[1] === 'true'
+            }
+
             if (overviewer.collections.haveSigns == true) {
                 // if there are markers for this tileset, create them now
                 if ((typeof markers !== 'undefined') && (obj.path in markers)) {
@@ -382,8 +391,19 @@ overviewer.util = {
                         // Create a Leaflet layer group
                         var marker_group = new L.layerGroup();
                         var marker_entry = markers[obj.path][mkidx];
-                        L.Util.setOptions(marker_group, {default_checked: marker_entry.checked});
+                        L.Util.setOptions(marker_group, {ov_group_id: marker_entry.groupName});
                         var icon =  L.divIcon({html: `<img class="ov-marker" src="${marker_entry.icon}">`});
+
+                        // Use check state from cookie if available
+                        if (marker_cookie_config[marker_entry.groupName] !== undefined) {
+                            L.Util.setOptions(marker_group, {default_checked: marker_cookie_config[marker_entry.groupName]});
+                        } else {
+                            L.Util.setOptions(marker_group, {default_checked: marker_entry.checked});
+                        }
+
+                        // Handle events on this layer group to set the necessary cookies
+                        marker_group.on('add', overviewer.util.layerGroupActiveEvent);
+                        marker_group.on('remove', overviewer.util.layerGroupInactiveEvent);
 
                         // For every marker in group
                         for (var dbidx = 0; dbidx < markersDB[marker_entry.groupName].raw.length; dbidx++) {
@@ -857,5 +877,11 @@ overviewer.util = {
             }
         }
         return false;
+    },
+    'layerGroupActiveEvent': function(ev) {
+        document.cookie=ev.target.options.ov_group_id + "=true; Max-Age=34560000";
+    },
+    'layerGroupInactiveEvent': function(ev) {
+        document.cookie=ev.target.options.ov_group_id + "=false; Max-Age=34560000";
     }
 };
