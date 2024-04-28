@@ -39,6 +39,30 @@
       },
       "revId": "017072dd1802733ba2cd60ad92c3b59eb1fb13bd",
       "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6b7101f_165d7315",
+        "filename": "overviewer_core/aux_files/genPOI.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2024-04-28T00:53:09Z",
+      "side": 1,
+      "message": "Fixed in [02b7e68084a2417648d094b50e8627820ed4f714](\u003chttps://git.fastlizard4.org/gitblit/commit/?r\u003dLizardNet-Minecraft/Overviewer.git\u0026h\u003d02b7e68084a2417648d094b50e8627820ed4f714\u003e).",
+      "parentUuid": "8c005fff_efaff3bb",
+      "range": {
+        "startLine": 628,
+        "startChar": 0,
+        "endLine": 631,
+        "endChar": 1
+      },
+      "revId": "017072dd1802733ba2cd60ad92c3b59eb1fb13bd",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
     }
   ],
   "submitRequirementResults": []
