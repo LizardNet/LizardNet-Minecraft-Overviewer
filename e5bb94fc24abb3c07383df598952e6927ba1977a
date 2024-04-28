@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73d80fcc_1c4d8aea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2024-04-28T01:05:07Z",
+      "side": 1,
+      "message": "LGTM as far as I can tell.\n\nNo pre-submit testing required.",
+      "revId": "e5bb94fc24abb3c07383df598952e6927ba1977a",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    }
+  ]
+}
