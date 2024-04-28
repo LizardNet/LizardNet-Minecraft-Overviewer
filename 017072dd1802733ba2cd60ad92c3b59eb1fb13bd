@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39a77f7a_4317734d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2024-04-28T00:42:43Z",
+      "side": 1,
+      "message": "Have one code nitpick which is noted below, but in the interest of getting this deployed before games night tonight, I\u0027ll just make the change myself and push directly.\n\nNo testing before submit required; we\u0027ll be testing this plenty later after it\u0027s deployed.",
+      "revId": "017072dd1802733ba2cd60ad92c3b59eb1fb13bd",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c005fff_efaff3bb",
+        "filename": "overviewer_core/aux_files/genPOI.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2024-04-28T00:42:43Z",
+      "side": 1,
+      "message": "```suggestion\n    for postprocess_group_name, postprocess_func in marker_groups_postprocess_functions.items():\n        markers[postprocess_group_name][\"raw\"] \u003d postprocess_func(markers[postprocess_group_name][\"raw\"])\n\n```\n\nNit: A little more compact",
+      "range": {
+        "startLine": 628,
+        "startChar": 0,
+        "endLine": 631,
+        "endChar": 1
+      },
+      "revId": "017072dd1802733ba2cd60ad92c3b59eb1fb13bd",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    }
+  ]
+}
