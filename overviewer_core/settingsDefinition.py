@@ -96,6 +96,7 @@ def get_default_config():
                 "manualpois": Setting(required=False, validator=validateManualPOIs, default=[]),
                 "showlocationmarker": Setting(required=False, validator=validateBool, default=True),
                 "center": Setting(required=False, validator=validateCoords, default=None),
+                "globalclassname": Setting(required=False, validator=validateStr, default=None),
                 # Remove this eventually (once people update their configs)
                 "worldname": Setting(required=False, default=None,
                     validator=error("The option 'worldname' is now called 'world'. Please update your config files")),

@@ -605,7 +605,8 @@ class TileSet(object):
             showlocationmarker=self.options.get("showlocationmarker"),
             center=(self.options.get("center") or self.options.get("spawn")
                     or [0, 64, 0]),
-            lastrenderversion=TILESET_VERSION
+            lastrenderversion=TILESET_VERSION,
+            globalClassName=self.options.get('globalclassname'),
         )
         d['maxZoom'] = self.options.get('maxzoom', self.treedepth)
         if d['maxZoom'] < 0:
