@@ -249,6 +249,13 @@ overviewer.util = {
                     }
                 }
             }
+
+            let oldClass = overviewer.current_layer[overviewer.current_world].tileSetConfig.globalClassName;
+            let newClass = ev.layer.tileSetConfig.globalClassName;
+            let map = document.getElementById("mcmap");
+            if (oldClass != null) map.classList.remove(oldClass);
+            if (newClass != null) map.classList.add(newClass)
+
             overviewer.current_layer[overviewer.current_world] = ev.layer;
             var ovconf = ev.layer.tileSetConfig;
 
