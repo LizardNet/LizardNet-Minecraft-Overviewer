@@ -970,6 +970,15 @@ Other HTML/JS output options
     **Default:** The coordinates of your spawn, or ``[0, 64, 0]`` if the regionset
     has no spawn.
 
+``globalClassName``
+    This allows you to add a CSS class to the ``#mcmap`` HTML element for this
+    render's tiles. This will, by default, do nothing, but if you define custom
+    web assets including custom CSS, this will allow you to specify CSS rules
+    which differ between renders more easily.
+
+    Unless you're doing fancy stuff with custom CSS, leave this alone.
+
+
 Map update behavior
 ~~~~~~~~~~~~~~~~~~~
 

@@ -216,9 +216,16 @@ overviewer.util = {
             '<a href="https://github.com/GregoryAM-SP/The-Minecraft-Overviewer" target="blank">Overviewer / LeafletJS</a>');
 
         overviewer.map.on('baselayerchange', function(ev) {
-            
+            const mapContainer = document.getElementById("mcmap");
+
             // when changing the layer, ensure coordinates remain correct
             if (overviewer.current_layer[overviewer.current_world]) {
+                // Remove any custom global CSS class from the wrapper
+                const oldClass = overviewer.current_layer[overviewer.current_world].tileSetConfig.globalClassName;
+                if (oldClass != null) {
+                    mapContainer.classList.remove(oldClass);
+                }
+
                 const center = overviewer.map.getCenter();
                 const currentWorldCoords = overviewer.util.fromLatLngToWorld(
                         center.lat, 
@@ -249,6 +256,13 @@ overviewer.util = {
                     }
                 }
             }
+
+            // Setup the new layer's custom global CSS class in the wrapper
+            let newClass = ev.layer.tileSetConfig.globalClassName;
+            if (newClass != null) {
+                mapContainer.classList.add(newClass)
+            }
+
             overviewer.current_layer[overviewer.current_world] = ev.layer;
             var ovconf = ev.layer.tileSetConfig;
 
@@ -256,7 +270,7 @@ overviewer.util = {
             overviewer.compass.render(ovconf.north_direction);
 
             // Set the background colour
-            document.getElementById("mcmap").style.backgroundColor = ovconf.bgcolor;
+            mapContainer.style.backgroundColor = ovconf.bgcolor;
 
             if (overviewer.collections.locationMarker) {
                 overviewer.collections.locationMarker.remove();
