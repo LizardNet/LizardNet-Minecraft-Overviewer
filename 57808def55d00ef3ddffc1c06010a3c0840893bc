@@ -33,6 +33,24 @@
       "message": "```suggestion\n                \"globalclassname\": Setting(required\u003dFalse, validator\u003dvalidateStr, default\u003dNone),\n```\n\nNit: This is more consistent with the existing format of configuration value names. I assume that this was done to make the JavaScript side of this change look more consistent, but I think people will generally be looking at the config far more, and so I\u0027d err on being stylistically consistent there rather than being consistent in the JavaScript.",
       "revId": "57808def55d00ef3ddffc1c06010a3c0840893bc",
       "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b2ee981_9023ef39",
+        "filename": "overviewer_core/settingsDefinition.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 16
+      },
+      "writtenOn": "2024-05-17T16:47:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29293b05_c1b77368",
+      "revId": "57808def55d00ef3ddffc1c06010a3c0840893bc",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
     }
   ]
 }
