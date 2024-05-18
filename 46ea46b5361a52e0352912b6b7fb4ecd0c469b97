@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3997c2cc_05ea2807",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2024-05-18T07:00:19Z",
+      "side": 1,
+      "message": "Sorry, a couple more questions; one inline, one below.\n\nAs far as I can tell (though could just be because I don\u0027t understand the JavaScript portions of this change), I can\u0027t see how the global CSS class is being set for fresh page loads; it seems that it\u0027s only being set on layer change. Consider for example if someone was given a direct link to the nighttime render, and they clicked it. Would that correctly apply the set global CSS class as-is?",
+      "revId": "46ea46b5361a52e0352912b6b7fb4ecd0c469b97",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05c87e78_76a0dc2d",
+        "filename": "overviewer_core/data/js_src/util.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2024-05-18T07:00:19Z",
+      "side": 1,
+      "message": "It looks like you added this in PS4, but it looks like a duplicate of previously added code elsewhere I\u0027m unclear what this does as compared to the other copy? Also, does there need to be a corresponding block for setting the global CSS class here?",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 157,
+        "endChar": 17
+      },
+      "revId": "46ea46b5361a52e0352912b6b7fb4ecd0c469b97",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    }
+  ]
+}
