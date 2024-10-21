@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2e22a8c_4da810dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2024-10-21T04:52:03Z",
+      "side": 1,
+      "message": "Code-wise, just a small nitpick, but feel free to go ahead and submit and run [the build](https://integration.fastlizard4.org:444/jenkins/job/minecraft-overviewer-build/) if you don\u0027t want to bother addressing.\n\nTested separately, no additional testing required.",
+      "revId": "649c5093d008f87fb4922144ed309ba0be9487ca",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55c9aeda_8d1ca6bc",
+        "filename": "overviewer_core/textures.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 4643,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2024-10-21T04:52:03Z",
+      "side": 1,
+      "message": "Wtf is this spacing.\n\nNothing that needs to be fixed since I know this is upstream, but still....",
+      "range": {
+        "startLine": 4643,
+        "startChar": 0,
+        "endLine": 4643,
+        "endChar": 127
+      },
+      "revId": "649c5093d008f87fb4922144ed309ba0be9487ca",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "999df7e9_103a26be",
+        "filename": "overviewer_core/textures.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 4736,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2024-10-21T04:52:03Z",
+      "side": 1,
+      "message": "Oooh, neat!",
+      "range": {
+        "startLine": 4734,
+        "startChar": 0,
+        "endLine": 4736,
+        "endChar": 1
+      },
+      "revId": "649c5093d008f87fb4922144ed309ba0be9487ca",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7661950a_b3453c47",
+        "filename": "overviewer_core/world.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1919,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2024-10-21T04:52:03Z",
+      "side": 1,
+      "message": "Nit: I think it would be better to write these out in binary to make the bitmasking a bit more clear, similar to how it\u0027s written out in `textures.py`.",
+      "range": {
+        "startLine": 1914,
+        "startChar": 0,
+        "endLine": 1919,
+        "endChar": 57
+      },
+      "revId": "649c5093d008f87fb4922144ed309ba0be9487ca",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    }
+  ]
+}
