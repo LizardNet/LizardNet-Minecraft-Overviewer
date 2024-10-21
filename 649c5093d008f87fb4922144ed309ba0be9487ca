@@ -64,6 +64,30 @@
       "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee4dacd3_6a2b9400",
+        "filename": "overviewer_core/textures.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 4736,
+      "author": {
+        "id": 16
+      },
+      "writtenOn": "2024-10-21T10:24:11Z",
+      "side": 1,
+      "message": "Yeah! I discovered this trick when doing some of the pale garden changes. I now feel like I want to retrofit it onto other block types...",
+      "parentUuid": "999df7e9_103a26be",
+      "range": {
+        "startLine": 4734,
+        "startChar": 0,
+        "endLine": 4736,
+        "endChar": 1
+      },
+      "revId": "649c5093d008f87fb4922144ed309ba0be9487ca",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7661950a_b3453c47",
