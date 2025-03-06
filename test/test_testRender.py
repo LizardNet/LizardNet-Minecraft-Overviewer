@@ -79,7 +79,7 @@ class TestTestRender(unittest.TestCase):
     def test_get_current_ref_returns_branch_name_if_possible(self, m_branch):
         self.assertEqual(test_render.get_current_ref(), "my-feature-branch")
 
-    @patch('contrib.testRender.get_current_commit', return_value="3f1f3d748e1c79843279ba18ab65a34368b95b67")
+    @patch('contrib.testRender.get_current_commit', return_value="3f1f3de8e1c79843279ba18ab65a34368b95b67")
     @patch('contrib.testRender.get_current_branch', return_value=None)
     def test_get_current_ref_returns_current_commit_if_no_branch(self, m_branch, m_commit):
         self.assertEqual(
