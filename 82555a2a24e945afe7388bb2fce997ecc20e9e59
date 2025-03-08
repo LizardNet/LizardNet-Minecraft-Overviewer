@@ -33,6 +33,23 @@
       "message": "This change is being tested as part of https://integration.fastlizard4.org:444/jenkins/job/minecraft-mapgen-do-s2/14881/console",
       "revId": "82555a2a24e945afe7388bb2fce997ecc20e9e59",
       "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b21de8a_277f064f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2025-03-08T00:47:13Z",
+      "side": 1,
+      "message": "Testing looks good, no issues noted",
+      "revId": "82555a2a24e945afe7388bb2fce997ecc20e9e59",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
     }
   ]
 }
