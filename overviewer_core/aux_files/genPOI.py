@@ -574,6 +574,10 @@ def main():
         markers[postprocess_group_name]["raw"] = postprocess_func(markers[postprocess_group_name]["raw"])
         logging.debug("Marker group %s: %r", postprocess_group_name, json.dumps(markers[postprocess_group_name]['raw']))
 
+    if 'genpoi_global_postprocess' in config:
+        logging.info("Running global postprocess")
+        markers = config['genpoi_global_postprocess'](markers)
+
     # apply filters to players
     if not args.skipplayers:
         PlayerDict.load_cache(destdir)
