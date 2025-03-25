@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adcc8ff0_132b4ffb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 16
+      },
+      "writtenOn": "2025-03-25T14:15:29Z",
+      "side": 1,
+      "message": "Verified via production build https://integration.fastlizard4.org:444/jenkins/job/minecraft-mapgen-do-s2/14946/console ; while this is no longer required for our player marker issue, it will do no harm and may assist again in the future. IMHO we should merge this anyway",
+      "revId": "7a287c7b1097409fe6fb9fa4e273e66f09bbbbce",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    }
+  ]
+}
