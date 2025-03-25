@@ -251,14 +251,17 @@ def handlePlayers(worldpath, filters, markers):
     playerdir = os.path.join(worldpath, "playerdata")
     useUUIDs = True
     if not os.path.isdir(playerdir):
+        logging.debug("handlePlayers: %s does not exist, using ./players", playerdir)
         playerdir = os.path.join(worldpath, "players")
         useUUIDs = False
 
     if os.path.isdir(playerdir):
         playerfiles = os.listdir(playerdir)
         playerfiles = [x for x in playerfiles if x.endswith(".dat")]
+        logging.debug("handlePlayers: found %d player(s)", len(playerfiles))
         isSinglePlayer = False
     else:
+        logging.debug("handlePlayers: %s does not exist, using level.dat in singleplayer mode", playerdir)
         playerfiles = [os.path.join(worldpath, "level.dat")]
         isSinglePlayer = True
 
@@ -588,6 +591,7 @@ def main():
             return x[4]
         sfilters = sorted(filters, key=keyfunc)
         for worldpath, worldpath_filters in itertools.groupby(sfilters, keyfunc):
+            logging.debug('Calling handlePlayers for worldpath: %s', worldpath)
             handlePlayers(worldpath, list(worldpath_filters), markers)
 
     # add manual POIs
