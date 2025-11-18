@@ -224,25 +224,21 @@ def validateFloat(f):
 def validateInt(i):
     return int(i)
 
-
 def validateStr(s):
     return str(s)
 
 
 def validateDimension(d):
-    # returns (original, argument to get_type)
-    # these are provided as arguments to RegionSet.get_type()
-    pretty_names = {
-        "nether": "DIM-1",
-        "overworld": "DIM0",
-        "end": "DIM1",
-        "default": 0,
-    }
-    try:
-        return (d, pretty_names[d])
-    except KeyError:
-        return (d, d)
+    """Validates the dimension setting"""
 
+    dimension_data = util.get_dimension_data(d)
+
+    if dimension_data is None:
+        raise ValidationException(
+            "Required key 'dimension' was not specified. Must be one of: 'overworld', 'nether', or 'end'"
+        )
+
+    return d, dimension_data[0], dimension_data[1], dimension_data[2]
 
 def validateOutputDir(d):
     checkBadEscape(d)

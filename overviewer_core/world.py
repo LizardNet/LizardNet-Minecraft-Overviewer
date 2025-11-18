@@ -180,7 +180,7 @@ class World(object):
         # Return a copy
         return dict(self.data)
 
-    def find_true_spawn(self):
+    def find_true_spawn(self, dimension):
         """Returns the spawn point for this world. Since there is one spawn
         point for a world across all dimensions (RegionSets), this method makes
         sense as a member of the World class.
@@ -194,9 +194,27 @@ class World(object):
 
         ## read spawn info from level.dat
         data = self.leveldat
-        disp_spawnX = spawnX = data['SpawnX']
-        spawnY = data['SpawnY']
-        disp_spawnZ = spawnZ = data['SpawnZ']
+
+        try:
+            ## Versions after 1.21.10 pull from a spawn pos array
+            spawnX = data['spawn']['pos'][0]
+            spawnY = data['spawn']['pos'][1]
+            spawnZ = data['spawn']['pos'][2]
+
+            dim = data['spawn']['dimension']
+            if dim != dimension[3]:
+                return None
+        except KeyError:
+            ## Versions prior to 1.21.10 can read directly from the level.dat
+            spawnX = data['SpawnX']
+            spawnY = data['SpawnY']
+            spawnZ = data['SpawnZ']
+
+            # Pre-1.21.9 versions forced the spawn to be in the overworld
+            if dimension[3] != "minecraft:overworld":
+                return None
+
+
 
         ## clamp spawnY to a sane value, in-chunk value
         if spawnY < -63:
@@ -390,7 +408,8 @@ class RegionSet(object):
             'minecraft:end_midlands',
             'minecraft:small_end_islands',
             'minecraft:end_barrens',
-            'minecraft:cherry_grove'
+            'minecraft:cherry_grove',
+            'minecraft:pale_garden'
         ]
 
         self._blockmap = {
@@ -443,6 +462,7 @@ class RegionSet(object):
             'minecraft:azalea_leaves': (161, 7),
             'minecraft:mangrove_leaves': (18, 8),
             'minecraft:cherry_leaves': (161, 9),
+            'minecraft:pale_oak_leaves': (161, 10),
             # end of leaves
             'minecraft:sponge': (19, 0),
             'minecraft:wet_sponge': (19, 1),
@@ -462,6 +482,8 @@ class RegionSet(object):
             'minecraft:short_grass': (31, 1),
             'minecraft:grass': (31, 1),  # Renamed to minecraft:short_grass in 1.20.3
             'minecraft:fern': (31, 2),
+            'minecraft:short_dry_grass': (31, 4),
+            'minecraft:tall_dry_grass': (31, 5),
             'minecraft:piston': (33, 0),
             'minecraft:piston_head': (34, 0),
             'minecraft:white_wool': (35, 0),
@@ -480,6 +502,10 @@ class RegionSet(object):
             'minecraft:green_wool': (35, 13),
             'minecraft:red_wool': (35, 14),
             'minecraft:black_wool': (35, 15),
+
+            'minecraft:test_block': (36, 0),
+            'minecraft:test_instance_block': (37, 0),
+
             # Flowers
             'minecraft:poppy': (38, 0),
             'minecraft:blue_orchid': (38, 1),
@@ -494,6 +520,9 @@ class RegionSet(object):
             "minecraft:wither_rose": (38, 10),
             "minecraft:cornflower": (38, 11),
             "minecraft:lily_of_the_valley": (38, 12),
+            "minecraft:closed_eyeblossom": (38, 13),
+            "minecraft:open_eyeblossom": (38, 14),
+            "minecraft:cactus_flower": (38, 15),
 
             'minecraft:brown_mushroom': (39, 0),
             'minecraft:red_mushroom': (40, 0),
@@ -560,6 +589,7 @@ class RegionSet(object):
             'minecraft:iron_door': (71, 0),
             'minecraft:oak_pressure_plate': (72, 0),
             'minecraft:redstone_ore': (73, 0),
+            # lit redstone ore = 74
             'minecraft:redstone_wall_torch': (75, 0),
             'minecraft:redstone_torch': (75, 5),
             'minecraft:stone_button': (77, 0),
@@ -621,6 +651,8 @@ class RegionSet(object):
             'minecraft:end_stone': (121, 0),
             'minecraft:dragon_egg': (122, 0),
             'minecraft:redstone_lamp': (123, 0),
+            # lit redstone lamp = 124
+            # double slab = 125
             'minecraft:oak_slab': (126, 0),
             'minecraft:spruce_slab': (126, 1),
             'minecraft:birch_slab': (126, 2),
@@ -677,6 +709,7 @@ class RegionSet(object):
             'minecraft:potted_warped_roots': (140, 32),
             'minecraft:potted_azalea_bush': (140, 33),
             'minecraft:potted_flowering_azalea_bush': (140, 34),
+            'minecraft:potted_pale_oak_sapling': (140, 35),
             'minecraft:carrots': (141, 0),
             'minecraft:potatoes': (142, 0),
             'minecraft:oak_button': (143, 0),
@@ -717,6 +750,7 @@ class RegionSet(object):
             'minecraft:black_terracotta': (159, 15),
             'minecraft:acacia_log': (162, 0),
             'minecraft:dark_oak_log': (162, 1),
+            'minecraft:pale_oak_log': (162, 2),
             'minecraft:acacia_stairs': (163, 0),
             'minecraft:dark_oak_stairs': (164, 0),
             'minecraft:slime_block': (165,0),
@@ -804,6 +838,21 @@ class RegionSet(object):
             'minecraft:structure_block': (255, 0),
             'minecraft:jigsaw': (256, 0),
             'minecraft:shulker_box': (257, 0),
+
+            'minecraft:bush': (258, 0),
+            'minecraft:firefly_bush': (259, 0),
+
+            'minecraft:copper_bars': (260, 0),
+            'minecraft:waxed_copper_bars': (260, 0),
+            'minecraft:exposed_copper_bars': (261, 0),
+            'minecraft:waxed_exposed_copper_bars': (261, 0),
+            'minecraft:weathered_copper_bars': (262, 0),
+            'minecraft:waxed_weathered_copper_bars': (262, 0),
+            'minecraft:oxidized_copper_bars': (263, 0),
+            'minecraft:waxed_oxidized_copper_bars': (263, 0),
+
+            'minecraft:copper_torch': (264, 0),
+            'minecraft:copper_wall_torch': (264, 5),
 
             'minecraft:armor_stand': (416, 0),  # not rendering
 
@@ -959,6 +1008,23 @@ class RegionSet(object):
             'minecraft:cave_vines_plant': (1116, 0),
             'minecraft:cave_vines': (1117, 0),
             'minecraft:lightning_rod': (1118, 0),
+            'minecraft:waxed_lightning_rod': (1118, 0),
+            'minecraft:exposed_lightning_rod': (1153, 0),
+            'minecraft:waxed_exposed_lightning_rod': (1153, 0),
+            'minecraft:weathered_lightning_rod': (1154, 0),
+            'minecraft:waxed_weathered_lightning_rod': (1154, 0),
+            'minecraft:oxidized_lightning_rod': (1155, 0),
+            'minecraft:waxed_oxidized_lightning_rod': (1155, 0),
+
+            'minecraft:copper_lantern': (1156, 0),
+            'minecraft:waxed_copper_lantern': (1156, 0),
+            'minecraft:exposed_copper_lantern': (1157, 0),
+            'minecraft:waxed_exposed_copper_lantern': (1157, 0),
+            'minecraft:weathered_copper_lantern': (1158, 0),
+            'minecraft:waxed_weathered_copper_lantern': (1158, 0),
+            'minecraft:oxidized_copper_lantern': (1159, 0),
+            'minecraft:waxed_oxidized_copper_lantern': (1159, 0),
+
             'minecraft:glow_lichen': (1119, 0),
             'minecraft:spore_blossom': (1120, 0),
 
@@ -987,18 +1053,21 @@ class RegionSet(object):
             'minecraft:stripped_jungle_log': (11306, 3),
             'minecraft:stripped_acacia_log': (11307, 0),
             'minecraft:stripped_dark_oak_log': (11307, 1),
+            'minecraft:stripped_pale_oak_log': (11307, 2),
             'minecraft:oak_wood': (11308, 0),
             'minecraft:spruce_wood': (11308, 1),
             'minecraft:birch_wood': (11308, 2),
             'minecraft:jungle_wood': (11308, 3),
             'minecraft:acacia_wood': (11309, 0),
             'minecraft:dark_oak_wood': (11309, 1),
+            'minecraft:pale_oak_wood': (11309, 2),
             'minecraft:stripped_oak_wood': (11310, 0),
             'minecraft:stripped_spruce_wood': (11310, 1),
             'minecraft:stripped_birch_wood': (11310, 2),
             'minecraft:stripped_jungle_wood': (11310, 3),
             'minecraft:stripped_acacia_wood': (11311, 0),
             'minecraft:stripped_dark_oak_wood': (11311, 1),
+            'minecraft:stripped_pale_oak_wood': (11311, 2),
             'minecraft:blue_ice': (11312, 0),
             'minecraft:smooth_stone': (11313, 0),
             'minecraft:smooth_sandstone': (11314, 0),
@@ -1088,6 +1157,24 @@ class RegionSet(object):
             "minecraft:composter": (11417, 0),
             "minecraft:barrel": (11418, 0),
             "minecraft:chain": (11419, 0),
+            "minecraft:iron_chain": (11420, 0), # Renamed from minecraft:chain in 1.21.9
+            "minecraft:copper_chain": (11421, 0),
+            "minecraft:exposed_copper_chain": (11422, 0),
+            "minecraft:weathered_copper_chain": (11423, 0),
+            "minecraft:oxidized_copper_chain": (11424, 0),
+            "minecraft:waxed_copper_chain": (11421, 0),
+            "minecraft:waxed_exposed_copper_chain": (11422, 0),
+            "minecraft:waxed_weathered_copper_chain": (11423, 0),
+            "minecraft:waxed_oxidized_copper_chain": (11424, 0),
+
+            "minecraft:copper_chest": (11425, 0),
+            "minecraft:exposed_copper_chest": (11426, 0),
+            "minecraft:weathered_copper_chest": (11427, 0),
+            "minecraft:oxidized_copper_chest": (11428, 0),
+            "minecraft:waxed_copper_chest": (11425, 0),
+            "minecraft:waxed_exposed_copper_chest": (11426, 0),
+            "minecraft:waxed_weathered_copper_chest": (11427, 0),
+            "minecraft:waxed_oxidized_copper_chest": (11428, 0),
             # 1.15 blocks below
             'minecraft:beehive': (11501, 0),
             'minecraft:bee_nest': (11502, 0),
@@ -1187,7 +1274,7 @@ class RegionSet(object):
             'minecraft:pitcher_crop': (1243, 0),
             # Mud
             'minecraft:mud_brick_stairs': (1224, 0),
-            'minecraft:mud_brick_wall': (1225, 0),
+            'minecraft:mud_brick_wall': (1817, 0),
             # Tinted Glass
             'minecraft:tinted_glass': (1226, 0),
             # Chiseled Bookshelf
@@ -1199,8 +1286,10 @@ class RegionSet(object):
             'minecraft:target': (1229, 0),
             # Nether Sprout
             'minecraft:nether_sprouts': (31, 3),
-            # Pink Petals
+            # Ground cover
             'minecraft:pink_petals': (1230, 0),
+            'minecraft:wildflowers': (1149, 0),
+            'minecraft:leaf_litter': (1221, 0),
             # Frogspawn
             'minecraft:frogspawn': (1231, 0),
             # Amethyst Cluster
@@ -1224,6 +1313,7 @@ class RegionSet(object):
             'minecraft:mangrove_wall_hanging_sign': (12608, 0),
             'minecraft:cherry_wall_hanging_sign': (12609, 0),
             'minecraft:bamboo_wall_hanging_sign': (12610, 0),
+            'minecraft:pale_oak_wall_hanging_sign': (12611, 0),
             # Hanging signs
             'minecraft:oak_hanging_sign': (12620, 0),
             'minecraft:spruce_hanging_sign': (12621, 0),
@@ -1236,6 +1326,7 @@ class RegionSet(object):
             'minecraft:mangrove_hanging_sign': (12628, 0),
             'minecraft:cherry_hanging_sign': (12629, 0),
             'minecraft:bamboo_hanging_sign': (12630, 0),
+            'minecraft:pale_oak_hanging_sign': (12631, 0),
 
             # 1.20 experimental stuff
             'minecraft:crafter': (12640, 0),
@@ -1298,7 +1389,20 @@ class RegionSet(object):
             'minecraft:chiseled_tuff_bricks': (12670, 0),
             'minecraft:tuff_brick_stairs': (12671, 0),
             'minecraft:tuff_brick_slab': (12672, 0),
-            
+
+            'minecraft:oak_shelf': (12700, 0),
+            'minecraft:spruce_shelf': (12701, 0),
+            'minecraft:birch_shelf': (12702, 0),
+            'minecraft:jungle_shelf': (12703, 0),
+            'minecraft:acacia_shelf': (12704, 0),
+            'minecraft:dark_oak_shelf': (12705, 0),
+            'minecraft:crimson_shelf': (12706, 0),
+            'minecraft:warped_shelf': (12707, 0),
+            'minecraft:mangrove_shelf': (12708, 0),
+            'minecraft:cherry_shelf': (12709, 0),
+            'minecraft:bamboo_shelf': (12710, 0),
+            'minecraft:pale_oak_shelf': (12711, 0),
+
             'minecraft:conduit': (1255, 0),
             'minecraft:sniffer_egg': (1256, 0),
             'minecraft:turtle_egg': (1257, 0),
@@ -1322,6 +1426,30 @@ class RegionSet(object):
             'minecraft:dragon_wall_head': (1281, 0),
             'minecraft:player_head': (1282, 0),
             'minecraft:player_wall_head': (1283, 0),
+
+            'minecraft:pale_oak_planks': (5, 11),
+            'minecraft:pale_oak_slab': (1130, 0),
+            'minecraft:pale_oak_stairs': (1131, 0),
+            'minecraft:pale_oak_pressure_plate': (1132, 0),
+            'minecraft:pale_oak_button': (1133, 0),
+            'minecraft:pale_oak_fence': (1134, 0),
+            'minecraft:pale_oak_fence_gate': (1135, 0),
+            'minecraft:pale_oak_door': (1136, 0),
+            'minecraft:pale_oak_trapdoor': (1137, 0),
+            'minecraft:pale_oak_wall_sign': (1138, 0),
+            'minecraft:pale_oak_sign': (1139, 0),
+            'minecraft:pale_oak_sapling': (1140, 0),
+            'minecraft:pale_moss_block': (1141, 0),
+            'minecraft:creaking_heart': (1142, 0),
+            'minecraft:pale_hanging_moss': (1143, 0),
+            'minecraft:pale_moss_carpet': (1144, 0),
+            'minecraft:resin_block': (1145, 0),
+            'minecraft:resin_bricks': (1146, 0),
+            'minecraft:resin_brick_stairs': (1147, 0),
+            'minecraft:resin_brick_slab': (1148, 0),
+            'minecraft:resin_brick_wall': (1816, 0),
+            'minecraft:chiseled_resin_bricks': (1150, 0),
+            'minecraft:resin_clump': (1151, 0),
 
             # Including these blocks ensures that no namespaces are omitted.
             # Add the following to the end of this block map; they serve no purpose.
@@ -1370,10 +1498,19 @@ class RegionSet(object):
         return "<RegionSet regiondir=%r>" % self.regiondir
 
     def _get_block(self, palette_entry):
+        def generate_copper(base_id, base_ns="minecraft"):
+            variants = []
+            states = ['','exposed_','weathered_','oxidized_']
+            for i in range(len(states)):
+                variants.append(f'{base_ns}:{states[i]}{base_id}')
+                variants.append(f'{base_ns}:waxed_{states[i]}{base_id}')
+            return variants
+
         wood_slabs = ('minecraft:oak_slab', 'minecraft:spruce_slab', 'minecraft:birch_slab', 'minecraft:jungle_slab',
                       'minecraft:acacia_slab', 'minecraft:dark_oak_slab', 'minecraft:petrified_oak_slab',
                       'minecraft:crimson_slab', 'minecraft:warped_slab', 'minecraft:mangrove_slab',
-                      'minecraft:cherry_slab', 'minecraft:bamboo_slab', 'minecraft:bamboo_mosaic_slab')
+                      'minecraft:cherry_slab', 'minecraft:bamboo_slab', 'minecraft:bamboo_mosaic_slab',
+                      'minecraft:pale_oak_slab')
         stone_slabs = ('minecraft:stone_slab', 'minecraft:sandstone_slab','minecraft:red_sandstone_slab',
                         'minecraft:cobblestone_slab', 'minecraft:brick_slab','minecraft:purpur_slab',
                         'minecraft:stone_brick_slab', 'minecraft:nether_brick_slab',
@@ -1389,7 +1526,8 @@ class RegionSet(object):
                         'minecraft:polished_blackstone_brick_slab', 'minecraft:cobbled_deepslate_slab',
                         'minecraft:polished_deepslate_slab', 'minecraft:deepslate_brick_slab',
                         'minecraft:deepslate_tile_slab', 'minecraft:mud_brick_slab',
-                        'minecraft:tuff_slab', 'minecraft:polished_tuff_slab', 'minecraft:tuff_brick_slab'
+                        'minecraft:tuff_slab', 'minecraft:polished_tuff_slab', 'minecraft:tuff_brick_slab',
+                        'minecraft:resin_brick_slab',
                          )
 
         prismarine_slabs = ('minecraft:prismarine_slab','minecraft:dark_prismarine_slab','minecraft:prismarine_brick_slab')
@@ -1452,6 +1590,7 @@ class RegionSet(object):
             'minecraft:tuff_slab': 'minecraft:tuff',
             'minecraft:polished_tuff_slab': 'minecraft:polished_tuff',
             'minecraft:tuff_brick_slab': 'minecraft:tuff_bricks',
+            'minecraft:resin_brick_slab': 'minecraft:resin_bricks',
 
             # Additional wooden double slabs not handled by the wooden slab function
             'minecraft:mangrove_slab': 'minecraft:mangrove_planks',
@@ -1459,6 +1598,7 @@ class RegionSet(object):
             'minecraft:cherry_slab': 'minecraft:cherry_planks',
             'minecraft:bamboo_slab': 'minecraft:bamboo_planks',
             'minecraft:bamboo_mosaic_slab': 'minecraft:bamboo_mosaic',
+            'minecraft:pale_oak_slab': 'minecraft:pale_oak_planks',
         }
 
         colors = ['white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan',
@@ -1547,10 +1687,12 @@ class RegionSet(object):
 
         elif key in ['minecraft:ladder', 'minecraft:chest', 'minecraft:ender_chest',
                      'minecraft:trapped_chest', 'minecraft:furnace',
-                     'minecraft:blast_furnace', 'minecraft:smoker']:
+                     'minecraft:blast_furnace', 'minecraft:smoker'] or \
+                key in generate_copper('copper_chest'):
             facing = palette_entry['Properties']['facing']
             data = {'north': 2, 'south': 3, 'west': 4, 'east': 5}[facing]
-            if key in ['minecraft:chest', 'minecraft:trapped_chest']:
+            if key in ['minecraft:chest', 'minecraft:trapped_chest'] or \
+                    key in generate_copper('copper_chest'):
                 # type property should exist, but default to 'single' just in case
                 chest_type = palette_entry['Properties'].get('type', 'single')
                 data |= {'left': 0x8, 'right': 0x10, 'single': 0x0}[chest_type]
@@ -1605,11 +1747,21 @@ class RegionSet(object):
             if axis == 'z':
                 data = 4
         elif key in ['minecraft:basalt', 'minecraft:polished_basalt', 'minecraft:chain', 'minecraft:purpur_pillar',
-                     'minecraft:deepslate'] or key.endswith('_froglight'):
+                     'minecraft:deepslate', 'minecraft:iron_chain'] or \
+                key.endswith('_froglight') or key in generate_copper('copper_chain'):
             axis = palette_entry['Properties']['axis']
             data = {'y': 0, 'x': 1, 'z': 2}[axis]
+        elif key == 'minecraft:creaking_heart':
+            axis = palette_entry['Properties']['axis']
+            state = palette_entry['Properties']['creaking_heart_state']
+
+            data = {'uprooted': 0, 'dormant': 1, 'awake': 2}[state]
+            data <<= 2
+            data |= {'y': 0, 'x': 1, 'z': 2}[axis]
+
         elif key in ['minecraft:redstone_torch','minecraft:redstone_wall_torch','minecraft:wall_torch',
-                    'minecraft:soul_torch', 'minecraft:soul_wall_torch']:
+                     'minecraft:soul_torch', 'minecraft:soul_wall_torch',
+                     'minecraft:copper_torch', 'minecraft:copper_wall_torch']:
             if key.startswith('minecraft:redstone_') and palette_entry['Properties']['lit'] == 'true':
                 block += 1
             if key.endswith('wall_torch'):
@@ -1695,8 +1847,10 @@ class RegionSet(object):
                      'minecraft:pumpkin_stem', 'minecraft:potatoes', 'minecraft:carrots',
                      'minecraft:sweet_berry_bush', 'minecraft:chorus_flower']:
             data = palette_entry['Properties']['age']
-        elif key in ['minecraft:lantern', 'minecraft:soul_lantern']:
-            if palette_entry['Properties']['hanging'] == 'true':
+        elif key in (['minecraft:lantern', 'minecraft:soul_lantern'] + generate_copper('copper_lantern')):
+            if palette_entry['Properties']['waterlogged'] == 'true':
+                block = 8
+            elif palette_entry['Properties']['hanging'] == 'true':
                 data = 1
             else:
                 data = 0
@@ -1747,6 +1901,7 @@ class RegionSet(object):
                 data |= {'floor': 0, 'ceiling': 4, 'single_wall': 8,
                          'double_wall': 12}[p['attachment']]
         elif key in ['minecraft:iron_bars', 'minecraft:glass_pane'] or \
+                key in generate_copper('copper_bars') or \
                 key in ['minecraft:%s_stained_glass_pane' % item for item in colors]:
             p = palette_entry['Properties']
             if p['north'] == 'true':
@@ -1761,10 +1916,15 @@ class RegionSet(object):
             p = palette_entry['Properties']
             data = {'tip': 0, 'tip_merge': 1, 'middle': 2, 'frustum': 3, 'base': 4}[p['thickness']]
             data |= {'up': 0, 'down': 0b1000}[p['vertical_direction']]
-        elif key in ['minecraft:small_amethyst_bud', 'minecraft:medium_amethyst_bud', 'minecraft:large_amethyst_bud',
-                     'minecraft:lightning_rod']:
+        elif key in ['minecraft:small_amethyst_bud', 'minecraft:medium_amethyst_bud', 'minecraft:large_amethyst_bud']:
             p = palette_entry['Properties']
             data = {'down': 0, 'up': 1, 'east': 2, 'south': 3, 'west': 4, 'north': 5}[p['facing']]
+        elif key == 'minecraft:lightning_rod' or key in generate_copper('lightning_rod'):
+            p = palette_entry['Properties']
+            if p['waterlogged'] == 'true':
+                block = 8
+            else:
+                data = {'down': 0, 'up': 1, 'east': 2, 'south': 3, 'west': 4, 'north': 5}[p['facing']]
         elif key in ['minecraft:cave_vines_plant', 'minecraft:cave_vines']:
             p = palette_entry['Properties']
             if p['berries'] == 'true':
@@ -1822,6 +1982,13 @@ class RegionSet(object):
 
         elif key == 'minecraft:trial_spawner':
             p = palette_entry['Properties']
+
+            # 3 bits of data.
+            #   ┌─── ominous
+            #   │┌┬─ vault_state
+            #   │││
+            # 0b111
+
             if p['trial_spawner_state'] in ['cooldown', 'inactive']:
                 data = 0
             if p['trial_spawner_state'] in ['active', 'waiting_for_players', 'waiting_for_reward_ejection']:
@@ -1829,8 +1996,15 @@ class RegionSet(object):
             if p['trial_spawner_state'] in ['ejecting_reward']:
                 data = 2
 
+            data |= (p['ominous'] == 'true') << 2
+
         elif key == 'minecraft:vault':
             p = palette_entry['Properties']
+            # 5 bits of data.
+            #   ┌───── ominous
+            #   │┌┬─── vault_state
+            #   │││┌┬─ facing
+            # 0b11111
 
             if p['facing'] == 'south':
                 data |= 0
@@ -1841,10 +2015,8 @@ class RegionSet(object):
             if p['facing'] == 'east':
                 data |= 3
 
-            if p['vault_state'] in ['active', 'unlocking']:
-                data |= 4
-            if p['vault_state'] in ['ejecting']:
-                data |= 12
+            data |= (['inactive', 'active', 'unlocking', 'ejecting'].index(p['vault_state']) << 2)
+            data |= (p['ominous'] == 'true') << 4
 
         elif key in ['minecraft:dead_%s_coral_wall_fan' % item for item in coral_list] or \
              key in ['minecraft:%s_coral_wall_fan' % item for item in coral_list]:
@@ -1910,10 +2082,10 @@ class RegionSet(object):
             if p['hatch'] == 2:
                 data = 2
 
-        elif key == 'minecraft:sculk_vein':
+        elif key in ['minecraft:sculk_vein', 'minecraft:resin_clump']:
             p = palette_entry['Properties']
 
-            if p['waterlogged'] == 'true':
+            if 'waterlogged' in p and p['waterlogged'] == 'true':
                 block = 8
             else:
                 data = 0
@@ -1923,6 +2095,57 @@ class RegionSet(object):
                 data |= 0b00_1000 if p['west'] == 'true' else 0
                 data |= 0b01_0000 if p['north'] == 'true' else 0
                 data |= 0b10_0000 if p['south'] == 'true' else 0
+
+        elif key == "minecraft:pale_hanging_moss":
+            p = palette_entry['Properties']
+            if p['tip'] == 'true':
+                data = 1
+
+        elif key == 'minecraft:pale_moss_carpet':
+            p = palette_entry['Properties']
+            data = 0
+
+            for dir in ['north', 'east', 'south', 'west']:
+                if p[dir] == 'low':
+                    data += 1
+                elif p[dir] == 'tall':
+                    data += 2
+                data = data * 3
+            data = int(data / 3)
+
+            data = data << 1
+
+            if p['bottom'] == 'true':
+                data |= 1
+
+        elif key in ('minecraft:pink_petals', 'minecraft:wildflowers', 'minecraft:leaf_litter'):
+            facing = palette_entry['Properties']['facing']
+            data = {'north': 0, 'east': 1, 'south': 2, 'west': 3}[facing]
+
+            if key == 'minecraft:leaf_litter':
+                amount = int(palette_entry['Properties']['segment_amount'])
+            else:
+                amount = int(palette_entry['Properties']['flower_amount'])
+
+            data |= (amount - 1) << 2
+
+        elif key == 'minecraft:test_block':
+            p = palette_entry['Properties']
+            data = ['start','accept','fail','log'].index(p['mode'])
+
+        elif key in ['minecraft:oak_shelf', 'minecraft:spruce_shelf', 'minecraft:birch_shelf',
+                     'minecraft:jungle_shelf', 'minecraft:acacia_shelf', 'minecraft:dark_oak_shelf',
+                     'minecraft:mangrove_shelf', 'minecraft:bamboo_shelf', 'minecraft:cherry_shelf',
+                     'minecraft:pale_oak_shelf', 'minecraft:crimson_shelf', 'minecraft:warped_shelf']:
+            p = palette_entry['Properties']
+            facing = p['facing']
+            data = ['south', 'west', 'north', 'east'].index(facing)
+
+            if p['powered'] == 'true':
+                data |= 0b100
+
+            if p['waterlogged'] == 'true':
+                block = 8
 
         return (block, data)
 

@@ -170,6 +170,7 @@ enum mc_block_id {
     block_dark_oak_stairs = 164,
     block_crimson_stairs = 509,
     block_warped_stairs = 510,
+    block_pale_oak_stairs = 1131,
     block_slime = 165,
     block_barrier = 166,
     block_iron_trapdoor = 167,
@@ -209,6 +210,8 @@ enum mc_block_id {
     block_mangrove_fence = 1195,
     block_bamboo_fence = 1215,
     block_cherry_fence = 1204,
+    block_pale_oak_fence = 1134,
+    block_pale_oak_fence_gate = 1135,
     block_spruce_door = 193,
     block_birch_door = 194,
     block_jungle_door = 195,
@@ -450,6 +453,8 @@ enum mc_block_id {
     block_tuff_wall = 1813,
     block_polished_tuff_wall = 1814,
     block_tuff_brick_wall = 1815,
+    block_resin_brick_wall = 1816,
+    block_mud_brick_wall = 1817,
     // end of walls
 
     block_prismarine_stairs = 11337,
@@ -557,7 +562,6 @@ enum mc_block_id {
     block_bamboo_stairs = 1211,
     block_bamboo_mosaic_stairs = 1212,
     block_mud_brick_stairs = 1224,
-    block_mud_brick_wall = 1225,
     block_chiseled_bookshelf = 1227,
     block_mangrove_slab = 1194,
     block_bamboo_slab = 1213,
@@ -570,6 +574,9 @@ enum mc_block_id {
     block_tuff_stairs = 12664,
     block_polished_tuff_stairs = 12667,
     block_tuff_brick_stairs = 12671,
+
+    block_resin_brick_stairs = 1147,
+    block_resin_brick_slab = 1148
 };
 
 typedef uint16_t mc_block_t;

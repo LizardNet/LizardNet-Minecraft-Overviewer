@@ -180,8 +180,14 @@ def main():
     # This section of main() runs in response to any one-time options we have,
     # such as -V for version reporting
     if args.version:
-        print("Minecraft Overviewer %s" % util.findGitTag() +
-              " (%s)" % util.findGitHash()[:7])
+        current_version = util.findGitTag()
+        
+        is_current_prerelease = any(prerelease in current_version.lower() for prerelease in ["alpha", "beta", "rc"])
+        current_prerelease_prefix = "(Prerelease) " if is_current_prerelease else ""
+
+        print("Minecraft Overviewer %s%s" % (current_prerelease_prefix, current_version) +
+            " (%s)" % util.findGitHash()[:7])
+
         try:
             import overviewer_core.overviewer_version as overviewer_version
             print("built on %s" % overviewer_version.BUILD_DATE)
@@ -191,24 +197,47 @@ def main():
                 print("Read version information from %r" % overviewer_version.__file__)
         except ImportError:
             print("(build info not found)")
+
         if args.verbose > 0:
             print("Python executable: %r" % sys.executable)
             print(sys.version)
+
         if not args.checkversion:
             return 0
+        
     if args.checkversion:
-        print("Currently running Minecraft Overviewer %s" % util.findGitTag() +
-              " (%s)" % util.findGitHash()[:7])
+        current_version = util.findGitTag()
+        
+        is_current_prerelease = any(prerelease in current_version.lower() for prerelease in ["alpha", "beta", "rc"])
+        current_prerelease_prefix = "(Prerelease) " if is_current_prerelease else ""
+
+        print("Currently running Minecraft Overviewer %s%s" % (current_prerelease_prefix, current_version) +
+            " (%s)" % util.findGitHash()[:7])
+
         try:
             import requests
             import json
-    
-            response = requests.get("https://overviewer.gregoryam.com/ov_versions.json")
+
+            # Fetch the latest version information from the GitHub repository
+            response = requests.get("https://raw.githubusercontent.com/GregoryAM-SP/Overviewer-RepoStats/refs/heads/main/data.json")
             if response.status_code == 200:
-                latest_ver = response.json()['src']
-                print("Latest version of Minecraft Overviewer v%s (%s)" % (latest_ver['version'],
-                                                                          latest_ver['commit'][:7]))
-                print("See https://github.com/GregoryAM-SP/The-Minecraft-Overviewer/releases/latest for more information.")
+                data = response.json()
+                latest_version_info = next((tag for tag in data['tags'] if tag['latest']), None)
+
+                if latest_version_info:
+                    latest_version = latest_version_info['tag']
+                    
+                    is_latest_prerelease = any(prerelease in latest_version.lower() for prerelease in ["alpha", "beta", "rc"])
+                    latest_prerelease_prefix = "(Prerelease) " if is_latest_prerelease else ""
+
+                    print("Latest release: Minecraft Overviewer %s%s" % (latest_prerelease_prefix, latest_version))
+                    
+                    if is_latest_prerelease:
+                        print("Note: The latest release is a prerelease version.")
+                    
+                    print("Download it from the GitHub releases page: https://github.com/GregoryAM-SP/The-Minecraft-Overviewer/releases/latest")
+                else:
+                    print("No latest version information found.")
             else:
                 print("Failed to fetch latest version info. Status code:", response.status_code)
                 if args.verbose > 0:
@@ -216,6 +245,7 @@ def main():
                 else:
                     print("Re-run with --verbose for more details.")
                 return 1
+
         except Exception as e:
             print("Failed to fetch latest version info:", str(e))
             if args.verbose > 0:
@@ -311,7 +341,13 @@ def main():
 
     if not args.config:
         # No config file mode.
-        worldpath, destdir = map(os.path.expanduser, [args.world, args.output])
+        worldpath = resolve_world_path(args.world)
+
+        if not worldpath:
+            logging.error(f"World '{worldpath}' not found; does it exist in the current folder or in the Minecraft saves directory?")
+            return 1
+
+        destdir = os.path.expanduser(args.output)
         logging.debug("Using %r as the world directory", worldpath)
         logging.debug("Using %r as the output directory", destdir)
 
@@ -574,7 +610,7 @@ def main():
             "imgquality", "imglossless", "optimizeimg", "rendermode", "worldname_orig", "title",
             "dimension", "changelist", "showspawn", "overlay", "base", "poititle", "maxzoom",
             "showlocationmarker", "minzoom", "center"])
-        tileSetOpts.update({"spawn": w.find_true_spawn()})  # TODO find a better way to do this
+        tileSetOpts.update({"spawn": w.find_true_spawn(render['dimension'])})
         for rset in rsets:
             tset = tileset.TileSet(w, rset, assetMrg, tex, tileSetOpts, tileset_dir)
             tilesets.append(tset)
@@ -665,6 +701,35 @@ def list_worlds():
         print("An error has been detected in one or more of your worlds (see the above table).")
         print("This is usually due to a corrupt level.dat file. Corrupt worlds need to be "
               "repaired before Overviewer can render them.")
+
+def resolve_world_path(world_input):
+    """
+    Find the world save folder for the specified input
+
+    If the world save folder exists in the current directory, it will be returned.
+    Otherwise, look in the platform Minecraft saves folder for a world directory with that name.
+    """
+    # See if the provided path actually exists
+    if os.path.exists(world_input):
+        return world_input
+
+    if os.path.sep in world_input:
+        return None
+
+    # Get standard Minecraft saves directory for current OS
+    if platform.system() == "Windows":
+        mc_saves = os.path.join(os.path.expanduser("~"), "AppData", "Roaming", ".minecraft", "saves")
+    elif platform.system() == "Darwin":  # MacOS
+        mc_saves = os.path.join(os.path.expanduser("~"), "Library", "Application Support", "minecraft", "saves")
+    else:  # Linux and other Unix-like systems
+        mc_saves = os.path.join(os.path.expanduser("~"), ".minecraft", "saves")
+    
+    # Check if world_input is a name in the saves directory
+    world_path = os.path.join(mc_saves, world_input)
+    if os.path.exists(world_path):
+        return world_path
+
+    return None
 
 
 if __name__ == "__main__":

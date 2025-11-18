@@ -530,6 +530,8 @@ def main():
 
             logging.debug('Render %s ff %s has name %s', rname, f["filterFunction"].__name__, name)
 
+            logging.debug('Render %s ff %s has name %s', rname, f["filterFunction"].__name__, name)
+
             # add it to the list of filters
             for rset in rsets:
                 logging.debug('Adding %s to %s', name, rset)
