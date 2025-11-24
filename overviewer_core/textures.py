@@ -832,6 +832,59 @@ class Textures(object):
             return None
         return (img, self.generate_opaque_mask(img))
 
+
+    def render_flat_head_view(self, facing_face, top_face):
+        """Render a flat view of a head (one face directly facing viewer)
+
+        In a flat view, an edge of the cube faces the camera (45° from corner view).
+        We see the front face straight-on, just vertically compressed due to the
+        isometric viewing angle.
+        """
+        img = Image.new('RGBA', (24, 24), self.bgcolor)
+
+        facing_scaled = facing_face.resize((16, 12), Image.LANCZOS)
+        top_strip = top_face.resize((16, 10), Image.LANCZOS)
+
+        alpha_over(img, top_strip, (4, 7), top_strip)
+        alpha_over(img, facing_scaled, (4, 8), facing_scaled)
+
+        return img
+
+    def render_intermediate_head_view(self, left_face: Image.Image, right_face: Image.Image, front_face: Image.Image,
+                                      top_face: Image.Image, position: int) -> Image.Image:
+        """Render intermediate view of a head between corner and flat orientations"""
+
+        img = Image.new('RGBA', (24, 24), self.bgcolor)
+
+        if position not in [1,3]:
+            raise ValueError("position must be 1 or 3")
+
+        if position == 1:
+            top_rotated = top_face.rotate(-23)
+            top_transformed = self.transform_image_top(top_rotated)
+
+            left_transformed = self.transform_image_angle(left_face, math.radians(45))
+            front_transformed = self.transform_image_angle(front_face, math.radians(- 45 + 22.5))
+
+            # Composite
+            alpha_over(img, top_transformed, (0, 6), top_transformed)
+            alpha_over(img, left_transformed, (-3, 1), left_transformed)
+            alpha_over(img, front_transformed, (2, 1), front_transformed)
+
+        else:  # position == 3
+            top_rotated = top_face.rotate(-68)
+            top_transformed = self.transform_image_top(top_rotated)
+
+            front_transformed = self.transform_image_angle(front_face, math.radians(45 - 22.5))
+            right_transformed = self.transform_image_angle(right_face, math.radians(-45))
+
+            # Composite
+            alpha_over(img, top_transformed, (0, 6), top_transformed)
+            alpha_over(img, right_transformed, (3, 1), right_transformed)
+            alpha_over(img, front_transformed, (-2, 1), front_transformed)
+
+        return img
+
 ##
 ## The other big one: @material and associated framework
 ##
@@ -7486,6 +7539,13 @@ def simple_wall_heads(self, blockid, data):
 
 @material(blockid=[1270, 1271, 1272, 1273, 1282], data=list(range(16)), transparent=True)
 def simple_heads(self, blockid, data):
+    """
+    This covers the heads which are "simple" - that is, they're plain cubes. This explicitly excludes dragon heads,
+    piglin heads, etc.
+
+    It also excludes custom-textured player heads.
+    """
+
     textures = {
         1270: "skeleton/skeleton",
         1271: "skeleton/wither_skeleton",
@@ -7512,20 +7572,31 @@ def simple_heads(self, blockid, data):
     alpha_over(back, full_tex.crop((24, 8, 32, 16)), (4, 8))
 
     sides = [left, front, right, back]
+    direction = ((data // 4) + self.rotation + 2) % 4
+    position_in_quarter = data % 4
 
-    direction = (round(data / 4) + self.rotation + 2) % 4
     for i in range(direction):
         sides = sides[1:] + sides[:1]
         top = top.rotate(270)
 
-    block_left = self.transform_image_side(sides[0])
-    block_right = self.transform_image_side(sides[1].transpose(Image.FLIP_LEFT_RIGHT)).transpose(Image.FLIP_LEFT_RIGHT)
+    if position_in_quarter == 0:
+        # Corner view - two full sides plus top visible (orientations 0, 4, 8, 12)
+        block_left = self.transform_image_side(sides[0])
+        block_right = self.transform_image_side(sides[1].transpose(Image.FLIP_LEFT_RIGHT)).transpose(Image.FLIP_LEFT_RIGHT)
+        block = self.build_full_block((top, 8), None, None, None, None, None)
+        alpha_over(block, block_left, (3, 4))
+        alpha_over(block, block_right, (9, 4))
+        return block
 
-    block = self.build_full_block((top, 8), None, None, None, None, None)
-    alpha_over(block, block_left, (3, 4))
-    alpha_over(block, block_right, (9, 4))
-    return block
+    elif position_in_quarter == 2:
+        # Flat view - one side directly facing viewer (orientations 2, 6, 10, 14)
+        img = self.render_flat_head_view(sides[1], top)
 
+    else:
+        # Intermediate view (orientations 1, 3, 5, 7, 9, 11, 13, 15)
+        img = self.render_intermediate_head_view(sides[0], sides[2], sides[1], top, position_in_quarter)
+
+    return img
 
 @material(blockid=[], data=[0], transparent=True)
 def difficult_heads(self, blockid, data):
