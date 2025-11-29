@@ -7802,6 +7802,77 @@ def shelf(self, block_id, data):
     return block
 
 
+@material(blockid=[1260], data=list(range(0b1111)), transparent=True)
+def dried_ghast(self, _, data):
+    direction = data & 0b0011
+    hydration = (data & 0b1100) >> 2
+
+    direction = (direction + self.rotation) % 4
+
+    top = Image.new("RGBA", (16, 16), self.bgcolor)
+    texture_top = self.load_image(f"{BLOCKTEXTURE}dried_ghast_hydration_{hydration}_top.png").crop((0, 0, 10, 10))
+    alpha_over(top, texture_top, (3, 3), texture_top)
+
+    east = Image.new("RGBA", (16, 16), self.bgcolor)
+    texture_east = self.load_image(f"{BLOCKTEXTURE}dried_ghast_hydration_{hydration}_east.png").crop((0, 0, 10, 10))
+    alpha_over(east, texture_east, (3, 6), texture_east)
+
+    north = Image.new("RGBA", (16, 16), self.bgcolor)
+    texture_north = self.load_image(f"{BLOCKTEXTURE}dried_ghast_hydration_{hydration}_north.png").crop((0, 0, 10, 10))
+    alpha_over(north, texture_north, (3, 6), texture_north)
+
+    south = Image.new("RGBA", (16, 16), self.bgcolor)
+    texture_south = self.load_image(f"{BLOCKTEXTURE}dried_ghast_hydration_{hydration}_south.png").crop((0, 0, 10, 10))
+    alpha_over(south, texture_south, (3, 6), texture_south)
+
+    west = Image.new("RGBA", (16, 16), self.bgcolor)
+    texture_west = self.load_image(f"{BLOCKTEXTURE}dried_ghast_hydration_{hydration}_west.png").crop((0, 0, 10, 10))
+    alpha_over(west, texture_west, (3, 6), texture_west)
+
+    texture_bottom = self.load_image(f"{BLOCKTEXTURE}dried_ghast_hydration_{hydration}_bottom.png").crop((0, 0, 10, 10))
+    texture_tentacles = self.load_image(f"{BLOCKTEXTURE}dried_ghast_hydration_{hydration}_tentacles.png")
+
+    bottom = Image.new("RGBA", (16, 16), self.bgcolor)
+    alpha_over(bottom, texture_bottom, (3, 3), texture_bottom)
+
+    # tentacles
+    # front right (bottom right corner) to front left (anticlockwise)
+    # x, y, dx, dy, (posx, posy)
+    tentacle_data = [
+        (3, 0, 2, 3, (13, 9), [Image.ROTATE_270]),
+        (3, 4, 2, 3, (13, 5), [Image.ROTATE_270]),
+        (12, 0, 3, 2, (9, 0), [Image.ROTATE_270, Image.FLIP_TOP_BOTTOM]),
+        (12, 3, 3, 2, (5, 0), [Image.ROTATE_270, Image.FLIP_TOP_BOTTOM]),
+        (3, 8, 2, 3, (0, 5), [Image.ROTATE_90, Image.FLIP_TOP_BOTTOM]),
+        (3, 12, 2, 3, (0, 9), [Image.ROTATE_90, Image.FLIP_TOP_BOTTOM]),
+    ]
+
+    for i in range(len(tentacle_data)):
+        d = tentacle_data[i]
+        texture = texture_tentacles.crop((d[0], d[1], d[0] + d[2], d[1] + d[3]))
+
+        for transform in d[5]:
+            texture = texture.transpose(transform)
+
+        alpha_over(bottom, texture, d[4], texture)
+
+    sides = [east, north, west, south]
+
+    for i in range(direction):
+        sides = sides[1:] + sides[:1]
+        top = top.rotate(270)
+        bottom = bottom.rotate(270)
+
+    block = self.build_full_block((top, 6), None, None, None, None, bottom)
+    block_left = self.transform_image_side(sides[0])
+    block_right = self.transform_image_side(sides[1].transpose(Image.FLIP_LEFT_RIGHT)).transpose(Image.FLIP_LEFT_RIGHT)
+
+    alpha_over(block, block_left, (3, 4))
+    alpha_over(block, block_right, (9, 4))
+
+    return block
+
+
 sprite(blockid=11385, imagename=BLOCKTEXTURE + "oak_sapling.png")
 sprite(blockid=11386, imagename=BLOCKTEXTURE + "spruce_sapling.png")
 sprite(blockid=11387, imagename=BLOCKTEXTURE + "birch_sapling.png")

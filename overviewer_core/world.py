@@ -1411,6 +1411,8 @@ class RegionSet(object):
             'minecraft:candle_cake': (1259, 0),
             'minecraft:candle': (1261, 0),
 
+            'minecraft:dried_ghast': (1260, 0),
+
             # Heads
             'minecraft:skeleton_skull': (1270, 0),
             'minecraft:wither_skeleton_skull': (1271, 0),
@@ -2146,6 +2148,16 @@ class RegionSet(object):
 
             if p['waterlogged'] == 'true':
                 block = 8
+
+        elif key == 'minecraft:dried_ghast':
+            p = palette_entry['Properties']
+
+            data = ['south', 'west', 'north', 'east'].index(p['facing'])
+            data |= (int(p['hydration']) << 2)
+
+            if p['waterlogged'] == 'true':
+                block = 8
+
 
         return (block, data)
 
