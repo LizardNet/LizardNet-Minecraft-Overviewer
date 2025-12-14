@@ -4,7 +4,7 @@ from overviewer_core import world
 
 class RegionSetTests(unittest.TestCase):
     def test_wall_blockids(self):
-        w = world.RegionSet('.', '.')
+        w = world.RegionSet('.', '.', {})
 
         for mc_id in w._blockmap:
             block_id = w._blockmap[mc_id][0]

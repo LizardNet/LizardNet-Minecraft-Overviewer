@@ -12,7 +12,7 @@ from overviewer_core import world
 
 # noinspection PyProtectedMember
 def main():
-    w = world.RegionSet('.', '.')
+    w = world.RegionSet('.', '.', {})
     dataset = OrderedDict()
 
     for mc_id in w._blockmap:
