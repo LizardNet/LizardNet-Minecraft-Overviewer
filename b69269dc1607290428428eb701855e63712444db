@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04e700b6_57a836e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 16
+      },
+      "writtenOn": "2025-12-19T23:46:54Z",
+      "side": 1,
+      "message": "I\u0027ve not tested this myself; but it\u0027s a fairly trivial change to try manually if desired.",
+      "revId": "b69269dc1607290428428eb701855e63712444db",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    }
+  ]
+}
