@@ -33,6 +33,23 @@
       "message": "Code looks good. Built successfully at https://integration.fastlizard4.org:444/jenkins/job/minecraft-overviewer-build/42/console, will do a test POI-only mapgen to verify the fix.",
       "revId": "b69269dc1607290428428eb701855e63712444db",
       "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b68437a5_01b29f3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2025-12-20T13:29:42Z",
+      "side": 1,
+      "message": "POI-only mapgen running at https://integration.fastlizard4.org:444/jenkins/job/minecraft-mapgen-do-s2/15972/console",
+      "revId": "b69269dc1607290428428eb701855e63712444db",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
     }
   ]
 }
