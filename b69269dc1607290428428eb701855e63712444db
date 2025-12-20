@@ -50,6 +50,23 @@
       "message": "POI-only mapgen running at https://integration.fastlizard4.org:444/jenkins/job/minecraft-mapgen-do-s2/15972/console",
       "revId": "b69269dc1607290428428eb701855e63712444db",
       "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "840cc4ca_8ba4f1aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1
+      },
+      "writtenOn": "2025-12-20T15:01:19Z",
+      "side": 1,
+      "message": "Verified that this fixes the issue.",
+      "revId": "b69269dc1607290428428eb701855e63712444db",
+      "serverId": "cf5d0eaf-4814-484b-b55f-41cd7f22928e"
     }
   ]
 }
